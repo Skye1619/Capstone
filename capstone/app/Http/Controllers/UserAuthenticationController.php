@@ -40,4 +40,32 @@ class UserAuthenticationController extends Controller
         return $response;
 
     }
+    public function login(Request $request){
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email',
+            'password' => 'required|string'
+        ]);
+        if ($validator->fails()){
+            return response(['error'=> $validator->errors()->all()[0]],422);
+        }
+        //check user in user table
+        $user = User::where('email', $request->email)->first();
+
+            //if exist
+            if($user){
+                //check hash password
+                $check_password = Hash::check($request->password, $user->password);
+
+                //if same
+                if($check_password){
+                    $token = $user->createToken('LaravelTokenPassword')->accessToken;
+                    $response = ['token' => $token, 'message' => 'Successfully Logged in!', 'user' => $user];
+                    return $response;
+                }else {
+                    return response(['error'=> 'Password is invalid'], 422);
+                }
+        }else {
+            return response(['error' => 'Email is invalid!'], 422);
+        }
+    }
 }
