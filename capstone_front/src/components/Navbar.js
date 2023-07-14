@@ -9,6 +9,7 @@ import InputBase from "@mui/material/InputBase";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import Logo from "./capstoneLogo.png";
+import keyLogo from "./reservaKey.png";
 import "./navbarCss.css";
 import {
   Card,
@@ -20,6 +21,7 @@ import {
   ListItemButton,
   ListItemText,
 } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -73,19 +75,33 @@ export default function SearchAppBar(props) {
     setMobileOpen((prevState) => !prevState);
   };
 
+  const drawerItemClick = (item) => {
+    if (item === "Profile") {
+    } else if (item === "Hotels") {
+    } else if (item === "About") {
+    } else if (item === "Logout") {
+    }
+  };
+
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <div className="drawerDivCard">
-        <Card sx={{ maxWidth: "240px" }}>
-          <CardMedia sx={{ height: 140 }} image={Logo} title="green iguana" />
+        <Card sx={{ maxWidth: "240px", boxShadow: "none" }}>
+          <CardMedia sx={{ height: 140 }} image={Logo} />
         </Card>
       </div>
       <Divider />
-      <List>
+      <List sx={{ padding: "10px" }}>
         {navItems.map((item) => (
           <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: "center" }}>
-              <ListItemText primary={item} />
+            <ListItemButton
+              sx={{ textAlign: "center", marginTop: "10px", boxShadow: 3 }}
+              color="primary"
+              onClick={drawerItemClick(item)}
+            >
+              <Link to={item.toLocaleLowerCase()} className="drawerLink">
+                <ListItemText primary={item} />
+              </Link>
             </ListItemButton>
           </ListItem>
         ))}
@@ -97,7 +113,7 @@ export default function SearchAppBar(props) {
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1 }} className='navbarRoot'>
       <AppBar position="static" color="primary">
         <Toolbar>
           <IconButton
@@ -110,21 +126,17 @@ export default function SearchAppBar(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-          >
-            MUI
-          </Typography>
-          <Search>
+          <div style={{width: '100%'}} className="keyDiv">
+            <img src={keyLogo} alt="Logo" style={{height: '100%', maxHeight: '56px'}} />
+          </div>
+          <Search className="searchRoot" >
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
+
             />
           </Search>
         </Toolbar>

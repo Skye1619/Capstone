@@ -1,0 +1,8 @@
+.appRoot {
+    box-sizing: border-box !important;
+    height: calc(100vh - 65px) !important;
+}
+
+#root {
+    box-sizing: border-box !important;
+}

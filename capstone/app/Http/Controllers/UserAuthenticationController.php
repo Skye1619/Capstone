@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class UserAuthenticationController extends Controller
 {
@@ -28,9 +29,11 @@ class UserAuthenticationController extends Controller
         $user = User::create([
             'username' => $request->username,
             'email' => $request->email,
+            'email_verified_at' => now(),
             'password' =>$password_hash,
             'age' => $request->age,
-            'phonenumber' => $request->phonenumber
+            'phonenumber' => $request->phonenumber,
+            'remember_token' => Str::random(10),
         ]);
 
         $token = $user->createToken('LaravelTokenPassword')->accessToken;

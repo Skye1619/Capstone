@@ -1,15 +1,40 @@
 .MuiAppBar-colorPrimary {
-    background: linear-gradient(
-        180deg,
-        rgb(0, 117, 70) 0%,
-        rgb(0, 107, 64) 10%,
-        rgb(0, 92, 55) 30%,
-        rgb(0, 92, 55) 70%,
-        rgb(0, 117, 70) 90%,
-        rgb(0, 110, 66) 100%
-      ) !important;
+  background: linear-gradient(
+    180deg,
+    rgb(0, 117, 70) 0%,
+    rgb(0, 107, 64) 10%,
+    rgb(0, 92, 55) 30%,
+    rgb(0, 92, 55) 70%,
+    rgb(0, 117, 70) 90%,
+    rgb(0, 110, 66) 100%
+  ) !important;
 }
 
 .drawerDivCard {
-    padding: 10px;
+  padding: 10px;
+}
+
+.drawerLink {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+}
+
+.MuiListItemButton-root {
+  background: #2196f3 !important;
+  border-radius: 8px !important;
+}
+
+.MuiListItemButton-root:hover {
+    background: rgb(0, 117, 70) !important;
+}
+
+
+@media (max-width: 600px) {
+    .keyDiv {
+        display: none !important;
+    }
 }
