@@ -1,0 +1,9 @@
+.appRoot {
+    box-sizing: border-box !important;
+    height: 100vh !important;
+    overflow: hidden;
+}
+
+#root {
+    box-sizing: border-box !important;
+}

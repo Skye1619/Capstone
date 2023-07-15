@@ -11,6 +11,8 @@ import Landing from "./components/Landing";
 import Login from "./components/Login";
 import Home from "./components/Home";
 import SearchAppBar from "./components/Navbar";
+import Profiles from "./components/Profiles";
+import About from "./components/About";
 
 function App() {
   return (
@@ -31,6 +33,8 @@ function App() {
             <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />
             <Route path="/home" element={<Home />} />
+            <Route path="/profile" element={<Profiles />} />
+            <Route path="/about" element={<About />} />
           </Routes>
         </div>
       </Router>

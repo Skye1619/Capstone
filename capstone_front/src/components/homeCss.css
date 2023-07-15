@@ -1,0 +1,59 @@
+.hotelHeader {
+    width: 100%;
+    height: 240px;
+    /* border: 1px solid red; */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    background: linear-gradient(-90deg, #000000cc, transparent), url('sloganBackground.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-style: italic;
+    padding-left: 50px;
+}
+
+.hotelRoot {
+    width: 100%;
+    height: calc(100% - 65px) !important;
+    box-sizing: border-box;
+    overflow: auto;
+}
+
+.hotelContainer {
+    height: 100%;
+    width: 100%;
+    max-width: 1280px;
+    box-sizing: border-box;
+}
+
+.hotelsList {
+    padding: 20px 50px 10px 50px;
+
+}
+
+.hotelListTitle {
+    font-weight: 700 !important;
+}
+
+/* .sloganTop {
+    margin-left: -250px !important;
+} */
+.sloganTop::before {
+    content: '\201C';
+    font-size: 64px;
+}
+
+.sloganBot {
+    margin-left: 250px !important;
+}
+.sloganBot::after {
+    content: '\201D';
+    font-size: 64px;
+}
+.slogan {
+    font-weight: 800 !important;
+    color: #ddd;
+}
