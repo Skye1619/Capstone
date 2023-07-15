@@ -1,6 +1,7 @@
 .appRoot {
     box-sizing: border-box !important;
-    height: calc(100vh - 65px) !important;
+    height: 100vh !important;
+    overflow: hidden;
 }
 
 #root {

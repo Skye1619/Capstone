@@ -87,7 +87,7 @@ export default function SearchAppBar(props) {
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <div className="drawerDivCard">
         <Card sx={{ maxWidth: "240px", boxShadow: "none" }}>
-          <CardMedia sx={{ height: 140 }} image={Logo} />
+          <Link to='/home'><CardMedia sx={{ height: 140 }} image={Logo} /></Link>
         </Card>
       </div>
       <Divider />
@@ -127,7 +127,7 @@ export default function SearchAppBar(props) {
             <MenuIcon />
           </IconButton>
           <div style={{width: '100%'}} className="keyDiv">
-            <img src={keyLogo} alt="Logo" style={{height: '100%', maxHeight: '56px'}} />
+            <Link to='/home'><img src={keyLogo} alt="Logo" style={{height: '100%', maxHeight: '56px'}} /></Link>
           </div>
           <Search className="searchRoot" >
             <SearchIconWrapper>
