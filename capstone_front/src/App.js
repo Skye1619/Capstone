@@ -12,7 +12,6 @@ import Login from "./components/Login";
 import Home from "./components/Home";
 import SearchAppBar from "./components/Navbar";
 import Profiles from "./components/Profiles";
-import Hotels from "./components/Hotels";
 import About from "./components/About";
 
 function App() {
@@ -35,7 +34,6 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/home" element={<Home />} />
             <Route path="/profile" element={<Profiles />} />
-            <Route path="/hotels" element={<Hotels />} />
             <Route path="/about" element={<About />} />
           </Routes>
         </div>

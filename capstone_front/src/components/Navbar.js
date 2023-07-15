@@ -66,7 +66,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const drawerWidth = 240;
-const navItems = ["Profile", "Hotels", "About", "Logout"];
+const navItems = ["Profile", "Home", "About", "Logout"];
 
 export default function SearchAppBar(props) {
   const { window } = props;
@@ -77,7 +77,7 @@ export default function SearchAppBar(props) {
 
   const drawerItemClick = (item) => {
     if (item === "Profile") {
-    } else if (item === "Hotels") {
+    } else if (item === "Home") {
     } else if (item === "About") {
     } else if (item === "Logout") {
     }
