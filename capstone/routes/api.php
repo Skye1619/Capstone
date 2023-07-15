@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\HotelController;
 use App\Http\Controllers\UserAuthenticationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -21,3 +23,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [UserAuthenticationController::class, 'register']);
 Route::post('/login', [UserAuthenticationController::class, 'login']);
+
+Route::middleware('auth:api')->group(function () {
+    Route::resource('/home', HotelController::class);
+});
