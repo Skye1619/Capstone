@@ -74,12 +74,15 @@ export default function SearchAppBar(props) {
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
+  /* const navigate = useNavigate() */
 
   const drawerItemClick = (item) => {
     if (item === "Profile") {
     } else if (item === "Home") {
     } else if (item === "About") {
     } else if (item === "Logout") {
+      localStorage.removeItem("login_token");
+      console.log('logged out', item);
     }
   };
 
@@ -87,7 +90,9 @@ export default function SearchAppBar(props) {
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <div className="drawerDivCard">
         <Card sx={{ maxWidth: "240px", boxShadow: "none" }}>
-          <Link to='/home'><CardMedia sx={{ height: 140 }} image={Logo} /></Link>
+          <Link to="/home">
+            <CardMedia sx={{ height: 140 }} image={Logo} />
+          </Link>
         </Card>
       </div>
       <Divider />
@@ -97,11 +102,17 @@ export default function SearchAppBar(props) {
             <ListItemButton
               sx={{ textAlign: "center", marginTop: "10px", boxShadow: 3 }}
               color="primary"
-              onClick={drawerItemClick(item)}
+              onClick={() => drawerItemClick(item)}
             >
-              <Link to={item.toLocaleLowerCase()} className="drawerLink">
-                <ListItemText primary={item} />
-              </Link>
+              {item === "Logout" ? (
+                <Link to="/login" className="drawerLink">
+                  <ListItemText primary={item} />
+                </Link>
+              ) : (
+                <Link to={item.toLocaleLowerCase()} className="drawerLink">
+                  <ListItemText primary={item} />
+                </Link>
+              )}
             </ListItemButton>
           </ListItem>
         ))}
@@ -113,7 +124,7 @@ export default function SearchAppBar(props) {
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ flexGrow: 1 }} className='navbarRoot'>
+    <Box sx={{ flexGrow: 1 }} className="navbarRoot">
       <AppBar position="static" color="primary">
         <Toolbar>
           <IconButton
@@ -126,17 +137,22 @@ export default function SearchAppBar(props) {
           >
             <MenuIcon />
           </IconButton>
-          <div style={{width: '100%'}} className="keyDiv">
-            <Link to='/home'><img src={keyLogo} alt="Logo" style={{height: '100%', maxHeight: '56px'}} /></Link>
+          <div style={{ width: "100%" }} className="keyDiv">
+            <Link to="/home">
+              <img
+                src={keyLogo}
+                alt="Logo"
+                style={{ height: "100%", maxHeight: "56px" }}
+              />
+            </Link>
           </div>
-          <Search className="searchRoot" >
+          <Search className="searchRoot">
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
-
             />
           </Search>
         </Toolbar>

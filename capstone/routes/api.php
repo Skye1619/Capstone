@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\UserAuthenticationController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,4 +27,5 @@ Route::post('/login', [UserAuthenticationController::class, 'login']);
 
 Route::middleware('auth:api')->group(function () {
     Route::resource('/home', HotelController::class);
+    Route::resource('/profile', UserController::class);
 });

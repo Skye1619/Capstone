@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Resources\HotelResources;
 use Illuminate\Http\Request;
 use App\Models\Hotel;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
+
 
 class HotelController extends Controller
 {
@@ -14,7 +17,7 @@ class HotelController extends Controller
     public function index()
     {
         //
-        $hotel = Hotel::all();
+        $hotel = Hotel::paginate(20);
         $response = [
             'code' => 200,
             'message' => 'Successfully Retrieval of Hotels!',

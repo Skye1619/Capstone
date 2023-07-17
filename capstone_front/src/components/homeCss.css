@@ -20,22 +20,35 @@
     height: calc(100% - 65px) !important;
     box-sizing: border-box;
     overflow: auto;
+    display: flex;
+    justify-content: center;
 }
 
 .hotelContainer {
     height: 100%;
     width: 100%;
-    max-width: 1280px;
+    /* max-width: 1280px; */
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 50px !important;
 }
 
 .hotelsList {
-    padding: 20px 50px 10px 50px;
-
+    padding: 20px 10px 50px 10px !important;
+    max-width: 1440px;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
 }
 
 .hotelListTitle {
     font-weight: 700 !important;
+    width: 100%;
+    display: flex !important;
+    justify-content: space-between;
 }
 
 /* .sloganTop {
@@ -56,4 +69,36 @@
 .slogan {
     font-weight: 800 !important;
     color: #ddd;
+}
+
+.hotelListContainer {
+    /* border: 1px solid red;
+    display: flex;
+    gap: 10px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0 10px; */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    flex: 1 0 280px;
+}
+
+.hotelCard {
+    display: flex;
+    /* flex: 1 0 240px; */
+    box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    max-width: 650px;
+    min-width: 430px;
+    overflow: hidden;
+}
+
+.cardDetailsDiv {
+    min-width: 310px;
+    max-width: 530px;
+    padding: 10px;
+    padding-bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
 }

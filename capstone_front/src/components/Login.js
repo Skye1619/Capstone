@@ -32,7 +32,9 @@ function Login() {
         );
         const token = response.data.token;
         localStorage.setItem("login_token", token);
-        console.log(response.data.token);
+        localStorage.setItem("username", response.data.user.username);
+        localStorage.setItem("email", response.data.user.email);
+        localStorage.setItem("phonenumber", response.data.user.phonenumber);
         navigation("/home");
       } catch (error) {
         console.log(error);

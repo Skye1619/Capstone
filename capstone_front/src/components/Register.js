@@ -17,7 +17,6 @@ function Register() {
   });
 
   const handleRegister = async (event) => {
-    console.log("logging");
     event.preventDefault();
     setError("");
     setLoading(true);
@@ -27,7 +26,6 @@ function Register() {
       return;
     } else {
       try {
-        console.log("try");
         const response = await axios.post(
           "http://127.0.0.1:8000/api/register",
           FormData
@@ -37,7 +35,6 @@ function Register() {
         localStorage.setItem("login_token", token);
         navigate("/home");
       } catch (e) {
-        console.log("catch");
         let errorMessage = e.response.data.error;
         setError(errorMessage);
       }
@@ -69,7 +66,6 @@ function Register() {
   };
 
   const handleChange = (event) => {
-    console.log(event.target.name, event.target.value);
     setFormData((prevState) => ({
       ...prevState,
       [event.target.name]: event.target.value,
