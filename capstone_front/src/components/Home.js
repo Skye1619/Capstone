@@ -32,10 +32,10 @@ function Hotels() {
 
         setData(hotels);
         setloading(false);
-        const element = document.querySelector('.hotelRoot');
+        const element = document.querySelector(".hotelRoot");
         element.scrollTo({
           top: 0,
-          behavior: 'smooth'
+          behavior: "smooth",
         });
       } catch (error) {
         console.log(error);
@@ -48,9 +48,7 @@ function Hotels() {
 
   const handleSeeMore = () => {
     setpage(page + 1);
-    
-    
-  }
+  };
 
   const populateData = () => {
     return data.map((hotel) => {
@@ -67,12 +65,9 @@ function Hotels() {
             style={{ width: "100%", maxWidth: "120px", flex: "1 0" }}
             src={image}
             alt="Hotel Image"
-            loading='lazy'
+            loading="lazy"
           />
-          <div
-            className="cardDetailsDiv"
-            style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}
-          >
+          <div className="cardDetailsDiv">
             <h5 style={{ margin: 0 }}>{hotelName}</h5>
             <Rating
               name="read-only"
@@ -81,24 +76,12 @@ function Hotels() {
               sx={{ marginBottom: "3px" }}
             />
             <p style={{ margin: 0, fontSize: "small" }}>{hotelDetails}</p>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                boxSizing: "border-box",
-                alignSelf: "flex-end",
-                width: "100%",
-              }}
-            >
-              <p style={{ fontSize: "small" }}>{hotelAddress}</p>
-              <Button
-                variant="contained"
-                sx={{ flexWrap: "nowrap", minWidth: "unset" }}
-              >
-                Book now
-              </Button>
-            </div>
+          </div>
+          <div className="addressDiv">
+            <p style={{ fontSize: "small" }}>{hotelAddress}</p>
+            <Button variant="contained" className="booknowButton">
+              Book now
+            </Button>
           </div>
         </div>
       );
@@ -118,10 +101,21 @@ function Hotels() {
         </div>
         <div className="hotelsList">
           <Typography variant="h6" className="hotelListTitle">
-            Find Your Hotels <span style={{fontSize: 'small', color: '#999', marginLeft: 'auto'}}>Page: {page}</span>
+            Find Your Hotels{" "}
+            <span
+              style={{ fontSize: "small", color: "#999", marginLeft: "auto" }}
+            >
+              Page: {page}
+            </span>
           </Typography>
           <div className="hotelListContainer">{populateData()}</div>
-          <Button onClick={handleSeeMore} variant="contained" sx={{width: 'fit-content', margin: '50px auto 0 auto'}}>See More</Button>
+          <Button
+            className="seemoreButton"
+            onClick={handleSeeMore}
+            variant="contained"
+          >
+            See More
+          </Button>
         </div>
       </div>
     </div>

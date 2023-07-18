@@ -55,3 +55,9 @@
 .profileButtons:hover {
     background: rgb(0, 117, 70) !important;
 }
+
+.editForm {
+    min-width: 280px !important;
+    box-sizing: border-box;
+    padding: 0 10px;
+}

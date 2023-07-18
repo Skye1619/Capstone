@@ -81,7 +81,7 @@ export default function SearchAppBar(props) {
     } else if (item === "Home") {
     } else if (item === "About") {
     } else if (item === "Logout") {
-      localStorage.removeItem("login_token");
+      localStorage.clear();
       console.log('logged out', item);
     }
   };

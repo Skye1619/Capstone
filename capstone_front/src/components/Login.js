@@ -32,9 +32,10 @@ function Login() {
         );
         const token = response.data.token;
         localStorage.setItem("login_token", token);
-        localStorage.setItem("username", response.data.user.username);
+        /* localStorage.setItem("username", response.data.user.username);
         localStorage.setItem("email", response.data.user.email);
-        localStorage.setItem("phonenumber", response.data.user.phonenumber);
+        localStorage.setItem("phonenumber", response.data.user.phonenumber); */
+        localStorage.setItem('user', JSON.stringify(response.data.user));
         navigation("/home");
       } catch (error) {
         console.log(error);

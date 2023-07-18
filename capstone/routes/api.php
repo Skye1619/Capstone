@@ -27,5 +27,5 @@ Route::post('/login', [UserAuthenticationController::class, 'login']);
 
 Route::middleware('auth:api')->group(function () {
     Route::resource('/home', HotelController::class);
-    Route::resource('/profile', UserController::class);
+    Route::resource('/user/profile', UserController::class);
 });
