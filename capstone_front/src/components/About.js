@@ -82,7 +82,7 @@ function About() {
         </section>
         <h1 style={{ textAlign: "center" }}>Testimonial</h1>
         <section className="testimonialSection">
-          <div class="quote">
+          <div className="quote">
             <blockquote>
               "Reserva exceeded our expectations! The ease of finding and
               booking accommodations was fantastic. The customer support team
@@ -91,7 +91,7 @@ function About() {
               <footer>&mdash;Emily and Michael, Reserva Users</footer>
             </blockquote>
           </div>
-          <div class="quote">
+          <div className="quote">
             <blockquote>
               "Reserva made our vacation a dream come true. We discovered unique
               and off-the-beaten-path destinations we wouldn't have found
@@ -101,7 +101,7 @@ function About() {
               <footer>&mdash;David and Lisa, Happy Reserva Travelers</footer>
             </blockquote>
           </div>
-          <div class="quote">
+          <div className="quote">
             <blockquote>
               "Using Reserva was a game-changer for our travel plans. The
               platform is intuitive, and the search filters made it easy to find
@@ -111,7 +111,7 @@ function About() {
               <footer>&mdash;Amy and Peter, Reserva Enthusiasts</footer>
             </blockquote>
           </div>
-          <div class="quote">
+          <div className="quote">
             <blockquote>
               "Reserva helped us discover hidden gems in every city we visited.
               The curated experiences and local recommendations added an extra
@@ -121,7 +121,7 @@ function About() {
               <footer>&mdash;Natalie and James, Reserva Explorers</footer>
             </blockquote>
           </div>
-          <div class="quote">
+          <div className="quote">
             <blockquote>
               "Our experience with Reserva was outstanding from start to finish.
               The comprehensive listings, accurate descriptions, and real

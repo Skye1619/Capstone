@@ -24,40 +24,73 @@
 }
 
 .profileImagePlaceholder {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    background-color: green;
-    margin-bottom: 10px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: green;
+  margin-bottom: 10px;
 }
 
 .profileDetails {
-    width: 100%;
-    margin-top: 10px;
+  width: 100%;
+  margin-top: 10px;
 }
 
 .detailsRow {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
 }
 
 .detailsRow span:first-of-type {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .detailsRow span:last-of-type {
-    color: #333;
-    display: flex;
-    flex-wrap: nowrap;
+  color: #333;
+  display: flex;
+  flex-wrap: nowrap;
 }
 
 .profileButtons:hover {
-    background: rgb(0, 117, 70) !important;
+  background: rgb(0, 117, 70) !important;
 }
 
 .editForm {
-    min-width: 280px !important;
-    box-sizing: border-box;
-    padding: 0 10px;
+  min-width: 280px !important;
+  box-sizing: border-box;
+  padding: 0 10px;
+  scrollbar-width: thin !important;
+  scrollbar-color: #aaa #dfe9eb !important;
+}
+
+.listPriceDiv {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.editForm::-webkit-scrollbar {
+  width: 10px !important;
+  width: 10px !important;
+}
+.editForm::-webkit-scrollbar-track {
+  border-radius: 5px !important;
+  background-color: #dfe9eb !important;
+}
+.editForm::-webkit-scrollbar-track:hover {
+  background-color: #b8c0c2 !important;
+}
+.editForm::-webkit-scrollbar-track:active {
+  background-color: #b8c0c2 !important;
+}
+.editForm::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: #aaa !important;
+}
+.editForm::-webkit-scrollbar-thumb:hover {
+  background-color: #999 !important;
+}
+.editForm::-webkit-scrollbar-thumb:active {
+  background-color: #999 !important;
 }

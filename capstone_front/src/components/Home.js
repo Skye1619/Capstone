@@ -6,6 +6,7 @@ import {
   CardContent,
   CardMedia,
   Rating,
+  Skeleton,
   Typography,
 } from "@mui/material";
 import axios from "axios";
@@ -48,6 +49,7 @@ function Hotels() {
 
   const handleSeeMore = () => {
     setpage(page + 1);
+    setloading(true);
   };
 
   const populateData = () => {
@@ -100,22 +102,35 @@ function Hotels() {
           </Typography>
         </div>
         <div className="hotelsList">
-          <Typography variant="h6" className="hotelListTitle">
-            Find Your Hotels{" "}
-            <span
-              style={{ fontSize: "small", color: "#999", marginLeft: "auto" }}
-            >
-              Page: {page}
-            </span>
-          </Typography>
+          {loading ? (
+            <Skeleton animation="wave" width="20%">
+              <Typography variant="h6">.</Typography>
+            </Skeleton>
+          ) : (
+            <Typography variant="h6" className="hotelListTitle">
+              Find Your Hotels{" "}
+              <span
+                style={{ fontSize: "small", color: "#999", marginLeft: "auto" }}
+              >
+                Page: {page}
+              </span>
+            </Typography>
+          )}
+
           <div className="hotelListContainer">{populateData()}</div>
-          <Button
-            className="seemoreButton"
-            onClick={handleSeeMore}
-            variant="contained"
-          >
-            See More
-          </Button>
+          {loading ? (
+            <Skeleton sx={{margin: '50px auto 0 auto'}} animation="wave">
+              <Button>See More</Button>
+            </Skeleton>
+          ) : (
+            <Button
+              className="seemoreButton"
+              onClick={handleSeeMore}
+              variant="contained"
+            >
+              See More
+            </Button>
+          )}
         </div>
       </div>
     </div>
