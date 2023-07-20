@@ -39,6 +39,7 @@ function Profiles() {
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(0);
+  const [confirmOpen, setconfirmOpen] = useState(false);
   const [deactivateOpen, setDeactivateOpen] = useState(false);
   const [listOpen, setListOpen] = useState(false);
   const [FormData, setFormData] = useState({
@@ -97,6 +98,10 @@ function Profiles() {
   const email = localStorage.getItem('email');
   const phonenumber = localStorage.getItem('phonenumber'); */
 
+  const handleConfirmClose = () => {
+    setconfirmOpen(false);
+  }
+
   const handleButton = (operation) => {
     if (operation === "logout") {
       localStorage.clear();
@@ -108,6 +113,10 @@ function Profiles() {
 
     if (operation === 'deactivateCancel') {
       handleClose()
+    }
+
+    if (operation === 'confirm') {
+      setconfirmOpen(true)
     }
 
     if (operation === "addPrice") {
@@ -391,9 +400,28 @@ function Profiles() {
               Are you sure you want to Deactivate your account?
             </Typography>
             <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
-              <Button className="profileButtons" variant="contained">Deactivate Account</Button>
+              <Button className="profileButtons" variant="contained" onClick={() => handleButton('confirm')}>Deactivate Account</Button>
               <Button className="profileButtons" variant="contained" onClick={() => handleButton('deactivateCancel')}>Cancel</Button>
             </div>
+          </Box>
+        </Modal>
+        <Modal
+          open={confirmOpen}
+          onClose={handleConfirmClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+          className="modalRootModal"
+        >
+          <Box sx={style}>
+          <TextField
+              label="To confirm please type 'Confirm'"
+              name="confirm"
+              variant="outlined"
+              fullWidth
+              required
+            />
+            <Button className="profileButtons" variant="contained" >Confirm Delete my Account</Button>
+            <Button className="profileButtons" variant="contained" onClick={handleConfirmClose} >Cancel</Button>
           </Box>
         </Modal>
       </div>

@@ -139,8 +139,46 @@
     margin: 50px auto 0 auto !important;
 }
 
+.typographyCenter {
+    text-align: center !important;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.booknowNote {
+    box-sizing: border-box;
+    background: #ddd;
+    display: flex;
+    justify-content: center;
+    padding: 15px 0;
+}
+
+.dualDiv {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+
+}
+
+.modalForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.categoryChoice {
+    width: fit-content !important;
+}
+
 @media (min-width: 900px) {
     .hotelListContainer {
         grid-template-columns: 1fr 1fr;
     }
+}
+
+@media (min-width: 550px) {
+    .dualDiv {
+        grid-template-columns: 1fr 1fr;
+    }
+    
 }

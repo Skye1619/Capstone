@@ -5,6 +5,7 @@ import {
   Route,
   Routes,
   useLocation,
+  useParams,
 } from "react-router-dom";
 import Register from "./components/Register";
 import Landing from "./components/Landing";
@@ -13,11 +14,29 @@ import Home from "./components/Home";
 import SearchAppBar from "./components/Navbar";
 import Profiles from "./components/Profiles";
 import About from "./components/About";
+import { useEffect } from "react";
+
 
 function App() {
 
+  function toTitleCaseAndRemoveFirstLetter(str) {
+    const titleCasedString = str.replace(/\b\w+/g, function(word) {
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    });
+  
+    // Remove the first letter (character) from the titleCasedString
+    const resultString = titleCasedString.slice(1);
+  
+    return resultString;
+  }
+
   const loc = useLocation()
+  console.log(loc)
   const {pathname} = loc
+
+  useEffect(() => {
+    document.title = pathname === '/' ? 'Reserva' : "Reserva - " + toTitleCaseAndRemoveFirstLetter(pathname)
+  }, [pathname])
 
   const isNavbarVisible = pathname !== "/" && pathname !== "/login" && pathname !== "/register";
   const isAuthenticated = localStorage.getItem('login_token');
