@@ -94,3 +94,12 @@
 .editForm::-webkit-scrollbar-thumb:active {
   background-color: #999 !important;
 }
+
+.myToast {
+  text-align: center;
+  border: 1px solid red;
+  margin: 10px !important;
+}
+.go2358747891 {
+  min-width: unset !important;
+}

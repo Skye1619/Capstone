@@ -3,10 +3,7 @@ import "./homeCss.css";
 import {
   Box,
   Button,
-  CardContent,
-  CardMedia,
   FormControl,
-  IconButton,
   Modal,
   Rating,
   Skeleton,
@@ -14,7 +11,11 @@ import {
   Typography,
 } from "@mui/material";
 import axios from "axios";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import dayjs from "dayjs";
 
 const style = {
   display: "flex",
@@ -35,7 +36,7 @@ const style = {
   p: 4,
 };
 
-function Hotels() {
+function Home() {
   const [data, setData] = useState([]);
   const [loading, setloading] = useState(true);
   const [page, setpage] = useState(1);
@@ -44,6 +45,7 @@ function Hotels() {
   const [modalFormData, setmodalFormData] = useState(undefined);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [choosenCategory, setchoosenCategory] = useState(undefined);
+  const [bookingDate, setbookingDate] = useState(dayjs());
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,6 +85,15 @@ function Hotels() {
     setCategoryOpen(true);
   };
 
+  const handleBookingButton = (operation) => {
+    if (operation === "confirm") {
+    }
+
+    if (operation === "cancel") {
+      setbooknowOpen(false);
+    }
+  };
+
   useEffect(() => {
     const element = document.querySelector(".hotelRoot");
     element.scrollTo({
@@ -92,9 +103,10 @@ function Hotels() {
 
     loading
       ? sethotelItems(
-          Array.from(new Array(20)).map((item) =>
+          Array.from(new Array(20)).map((item, index) =>
             item ? undefined : (
               <Skeleton
+                key={index}
                 variant="rectagular"
                 sx={{ width: "100%", height: "180px", borderRadius: "5px" }}
               />
@@ -220,6 +232,16 @@ function Hotels() {
             </Typography>
           </div>
           <FormControl className="modalForm">
+            <div>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DateTimePicker
+                  label="Select Appointment Date"
+                  value={bookingDate}
+                  onChange={(newValue) => setbookingDate(newValue)}
+                  desktopModeMediaQuery="dialog"
+                />
+              </LocalizationProvider>
+            </div>
             <div className="dualDiv">
               <TextField
                 label="First Name"
@@ -285,8 +307,7 @@ function Hotels() {
                   <div>
                     Booking Category: <span>{choosenCategory}</span>
                   </div>
-                ) : null
-                }
+                ) : null}
               </Typography>
               <Modal
                 open={categoryOpen}
@@ -303,19 +324,19 @@ function Hotels() {
                     variant="contained"
                     onClick={() => categoryChoose("Short Time")}
                   >
-                    Short Time
+                    Short Time - 3hrs
                   </Button>
                   <Button
                     variant="contained"
                     onClick={() => categoryChoose("Extended")}
                   >
-                    Extended
+                    Extended - 6hrs
                   </Button>
                   <Button
                     variant="contained"
                     onClick={() => categoryChoose("Half Day")}
                   >
-                    Half Day
+                    Half Day - 12hrs
                   </Button>
                   <Button
                     variant="contained"
@@ -326,6 +347,20 @@ function Hotels() {
                 </Box>
               </Modal>
             </div>
+            <Button
+              variant="contained"
+              onClick={() => handleBookingButton("confirm")}
+              fullWidth
+            >
+              Reserve now
+            </Button>
+            <Button
+              variant="contained"
+              onClick={() => handleBookingButton("cancel")}
+              fullWidth
+            >
+              Cancel Booking
+            </Button>
           </FormControl>
         </Box>
       </Modal>
@@ -333,4 +368,4 @@ function Hotels() {
   );
 }
 
-export default Hotels;
+export default Home;

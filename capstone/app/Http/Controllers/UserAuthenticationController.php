@@ -38,7 +38,13 @@ class UserAuthenticationController extends Controller
 
         $token = $user->createToken('LaravelTokenPassword')->accessToken;
 
-        $response = ['token' => $token, 'message' => 'User Successfully created!'];
+        $userDataResponse = [
+            'username' => $request->username,
+            'email' => $request->email,
+            'age' => $request->age,
+            'phonenumber' => $request->phonenumber,
+        ];
+        $response = ['token' => $token, 'message' => 'User Successfully created!', 'user' => $userDataResponse];
 
         return $response;
 

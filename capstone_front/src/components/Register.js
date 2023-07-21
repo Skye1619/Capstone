@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./registerCss.css";
-import { Alert, Button, TextField } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Alert, Button, TextField, Typography } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function Register() {
@@ -15,6 +15,12 @@ function Register() {
     age: "",
     phonenumber: "",
   });
+
+  const token = localStorage.getItem("login_token");
+
+  useEffect(() => {
+    token ? navigate('/home') : navigate('/register');
+  }, [])
 
   const handleRegister = async (event) => {
     event.preventDefault();
@@ -33,6 +39,7 @@ function Register() {
         const token = response.data.token;
 
         localStorage.setItem("login_token", token);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
         navigate("/home");
       } catch (e) {
         let errorMessage = e.response.data.error;
@@ -135,6 +142,8 @@ function Register() {
           >
             Register
           </Button>
+          <Typography variant='p'>Already have an Account? <Link to='/login' style={{textDecoration: 'none', color: 'blue'}}>Login</Link> </Typography>
+          
         </form>
       </div>
     </div>

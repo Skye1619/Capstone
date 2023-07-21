@@ -15,10 +15,7 @@ class UserController extends Controller
     public function index()
     {
         //
-        $user = User::all();
-        $response = ['code' => 200, 'message' => 'Successfully retrieved users', UserResource::collection($user)];
-
-        return $response;
+        
     }
 
     /**
@@ -27,16 +24,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //
-        /* $request->validate([
-            'username' => 'required|string',
-            'email' => 'required|string',
-            'password' => 'required|string',
-            'age' => 'required|integer',
-            'phonenumber' => 'required|string',
-        ]);
-
-        $user = User::create($request->all());
-        $response = ['code' => 200, 'message' => 'Account Successfu']; */
+        
     }
 
     /**

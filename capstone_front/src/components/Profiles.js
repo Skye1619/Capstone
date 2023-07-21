@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Box,
   Button,
@@ -10,9 +10,12 @@ import {
   Typography,
 } from "@mui/material";
 import "./profileCss.css";
+import axios from "axios";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
+import PulseLoader from "react-spinners/PulseLoader";
 
 const style = {
   display: "flex",
@@ -42,6 +45,10 @@ function Profiles() {
   const [confirmOpen, setconfirmOpen] = useState(false);
   const [deactivateOpen, setDeactivateOpen] = useState(false);
   const [listOpen, setListOpen] = useState(false);
+  const [updating, setUpdating] = useState(false);
+  const [deleting, setDeleting] = useState(false)
+  const confirmRef = useRef(null);
+
   const [FormData, setFormData] = useState({
     username: "",
     email: "",
@@ -62,6 +69,91 @@ function Profiles() {
       setDeactivateOpen(true);
     }
   };
+
+  const deactivateConfirm = () => {
+    console.log(confirmRef.current.value)
+    if (confirmRef.current.value === "Confirm") {
+      // Confirm the Account Deactivation
+      setDeleting(true);
+      const fetchData = async () => {
+        try {
+          const response = await axios.delete(
+            `http://127.0.0.1:8000/api/user/profile/${user.email}`,
+            {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem("login_token"),
+              },
+            }
+          );
+          localStorage.clear();
+          const message = "Account Successfully Deactivated";
+          toast(message, {
+            duration: 4000,
+            position: "top-center",
+
+            style: { zIndex: "1000000" },
+            className: "myToast",
+
+            icon: "",
+
+            iconTheme: {
+              primary: "#000",
+              secondary: "#fff",
+            },
+
+            ariaProps: {
+              role: "status",
+              "aria-live": "polite",
+            },
+          });
+          navigate('/login')
+          window.location.reload();
+        } catch (error) {
+          toast(error.response.errors.message, {
+            duration: 4000,
+            position: "top-center",
+
+            style: { zIndex: "1000000" },
+            className: "myToast",
+
+            icon: "",
+
+            iconTheme: {
+              primary: "#000",
+              secondary: "#fff",
+            },
+
+            ariaProps: {
+              role: "status",
+              "aria-live": "polite",
+            },
+          });
+        }
+      };
+      fetchData();
+    } else {
+      toast('Type "Confirm" To confirm Deactivation of Your Account', {
+        duration: 4000,
+        position: "top-center",
+
+        style: { zIndex: "1000000" },
+        className: "myToast",
+
+        icon: "",
+
+        iconTheme: {
+          primary: "#000",
+          secondary: "#fff",
+        },
+
+        ariaProps: {
+          role: "status",
+          "aria-live": "polite",
+        },
+      });
+    }
+  };
+
   const handleClose = () => {
     setOpen(false);
     setListOpen(false);
@@ -73,11 +165,11 @@ function Profiles() {
   useEffect(() => {
     if (open) {
       setFormData({
-        username: "",
-        email: "",
+        username: user.username,
+        email: user.email,
         password: "",
-        age: "",
-        phonenumber: "",
+        age: user.age,
+        phonenumber: user.phonenumber,
       });
     }
 
@@ -100,7 +192,7 @@ function Profiles() {
 
   const handleConfirmClose = () => {
     setconfirmOpen(false);
-  }
+  };
 
   const handleButton = (operation) => {
     if (operation === "logout") {
@@ -109,14 +201,77 @@ function Profiles() {
     }
 
     if (operation === "edit") {
+      setUpdating(true);
+      const fetchData = async () => {
+        try {
+          const response = await axios.put(
+            `http://127.0.0.1:8000/api/user/profile/${user.email}`,
+            FormData,
+            {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem("login_token"),
+              },
+            }
+          );
+
+          const message = "Profile updated successfully";
+          toast(message, {
+            duration: 4000,
+            position: "top-center",
+
+            style: { zIndex: "1000000" },
+            className: "myToast",
+
+            icon: "",
+
+            iconTheme: {
+              primary: "#000",
+              secondary: "#fff",
+            },
+
+            ariaProps: {
+              role: "status",
+              "aria-live": "polite",
+            },
+          });
+          localStorage.removeItem("user");
+          setUpdating(false);
+          localStorage.setItem("user", JSON.stringify(response.data.user));
+          console.log(response.data, "hello");
+          window.location.reload();
+        } catch (error) {
+          console.error(error, error.response.data.message);
+          setUpdating(false);
+          toast(error.response.data.message, {
+            duration: 4000,
+            position: "top-center",
+
+            className: "myToast",
+
+            icon: "",
+
+            iconTheme: {
+              primary: "#000",
+              secondary: "#fff",
+            },
+
+            ariaProps: {
+              role: "status",
+              "aria-live": "polite",
+            },
+          });
+        }
+      };
+
+      fetchData();
     }
 
-    if (operation === 'deactivateCancel') {
-      handleClose()
+    if (operation === "deactivateCancel") {
+      handleClose();
     }
 
-    if (operation === 'confirm') {
-      setconfirmOpen(true)
+    if (operation === "confirm") {
+      setconfirmOpen(true);
     }
 
     if (operation === "addPrice") {
@@ -162,6 +317,7 @@ function Profiles() {
   };
 
   const handleChange = (event) => {
+    console.log(FormData);
     setFormData((prevState) => ({
       ...prevState,
       [event.target.name]: event.target.value,
@@ -250,6 +406,7 @@ function Profiles() {
               name="username"
               variant="outlined"
               onChange={handleChange}
+              defaultValue={user.username}
               fullWidth
               required
             />
@@ -258,6 +415,7 @@ function Profiles() {
               name="email"
               variant="outlined"
               onChange={handleChange}
+              defaultValue={user.email}
               fullWidth
               required
             />
@@ -281,6 +439,7 @@ function Profiles() {
                 maxLength: 3,
               }}
               onChange={handleChange}
+              defaultValue={user.age}
               fullWidth
               required
             />
@@ -291,6 +450,7 @@ function Profiles() {
               onChange={handleChange}
               inputProps={{ inputMode: "text", pattern: "[0-9]*" }}
               fullWidth
+              defaultValue={user.phonenumber}
               required
             />
             <Button
@@ -299,9 +459,20 @@ function Profiles() {
               variant="contained"
               color="primary"
               onClick={() => handleButton("edit")}
+              disabled={updating ? true : false}
               fullWidth
             >
-              Confirm Changes
+              {updating ? <PulseLoader color="#2196f3" /> : "Confirm Changes"}
+            </Button>
+            <Button
+              className="profileButtons"
+              type="cancel"
+              variant="contained"
+              color="primary"
+              onClick={handleClose}
+              fullWidth
+            >
+              Cancel
             </Button>
           </FormControl>
         </Modal>
@@ -386,6 +557,16 @@ function Profiles() {
             >
               Confirm Listing
             </Button>
+            <Button
+              className="profileButtons"
+              type="cancel"
+              variant="contained"
+              color="primary"
+              onClick={handleClose}
+              fullWidth
+            >
+              Cancel
+            </Button>
           </FormControl>
         </Modal>
         <Modal
@@ -399,9 +580,23 @@ function Profiles() {
             <Typography variant="p" sx={{ textAlign: "center" }}>
               Are you sure you want to Deactivate your account?
             </Typography>
-            <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
-              <Button className="profileButtons" variant="contained" onClick={() => handleButton('confirm')}>Deactivate Account</Button>
-              <Button className="profileButtons" variant="contained" onClick={() => handleButton('deactivateCancel')}>Cancel</Button>
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+            >
+              <Button
+                className="profileButtons"
+                variant="contained"
+                onClick={() => handleButton("confirm")}
+              >
+                Deactivate Account
+              </Button>
+              <Button
+                className="profileButtons"
+                variant="contained"
+                onClick={() => handleButton("deactivateCancel")}
+              >
+                Cancel
+              </Button>
             </div>
           </Box>
         </Modal>
@@ -413,18 +608,43 @@ function Profiles() {
           className="modalRootModal"
         >
           <Box sx={style}>
-          <TextField
+            <TextField
               label="To confirm please type 'Confirm'"
               name="confirm"
               variant="outlined"
+              inputRef={confirmRef}
               fullWidth
               required
             />
-            <Button className="profileButtons" variant="contained" >Confirm Delete my Account</Button>
-            <Button className="profileButtons" variant="contained" onClick={handleConfirmClose} >Cancel</Button>
+            <Button
+              className="profileButtons"
+              variant="contained"
+              onClick={deactivateConfirm}
+              disabled={deleting ? true : false}
+            >
+              {deleting ? <PulseLoader color="#2196f3" />: 'Confirm Delete my Account'}
+              
+            </Button>
+            <Button
+              className="profileButtons"
+              variant="contained"
+              onClick={handleConfirmClose}
+            >
+              Cancel
+            </Button>
           </Box>
         </Modal>
       </div>
+      <Toaster
+        toastOptions={{
+          className: "",
+          style: {
+            border: "1px solid #713200",
+            padding: "10px",
+            color: "#713200",
+          },
+        }}
+      />
     </div>
   );
 }
