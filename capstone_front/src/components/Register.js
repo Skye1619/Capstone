@@ -22,8 +22,15 @@ function Register() {
     token ? navigate('/home') : navigate('/register');
   }, [])
 
+  const enterPressed = (event) => {
+    console.log(event.key)
+    if (event.key === "Enter") {
+      handleRegister();
+    }
+  };
+
   const handleRegister = async (event) => {
-    event.preventDefault();
+    event?.preventDefault();
     setError("");
     setLoading(true);
 
@@ -90,6 +97,7 @@ function Register() {
             name="username"
             variant="outlined"
             onChange={handleChange}
+            onKeyUp={enterPressed}
             fullWidth
             required
           />
@@ -98,6 +106,7 @@ function Register() {
             name="email"
             variant="outlined"
             onChange={handleChange}
+            onKeyUp={enterPressed}
             fullWidth
             required
           />
@@ -107,6 +116,7 @@ function Register() {
             type="password"
             variant="outlined"
             onChange={handleChange}
+            onKeyUp={enterPressed}
             fullWidth
             required
           />
@@ -121,6 +131,7 @@ function Register() {
               maxLength: 3
             }}
             onChange={handleChange}
+            onKeyUp={enterPressed}
             fullWidth
             required
           />
@@ -129,6 +140,7 @@ function Register() {
             name="phonenumber"
             variant="outlined"
             onChange={handleChange}
+            onKeyUp={enterPressed}
             inputProps={{ inputMode: "text", pattern: "[0-9]*" }}
             fullWidth
             required

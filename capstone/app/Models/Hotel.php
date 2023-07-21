@@ -15,7 +15,7 @@ class Hotel extends Model
         return $this->belongsTo(Price::class);
     }
     public function user() {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'owner_id');
     }
     protected $table = 'hotel';
 

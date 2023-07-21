@@ -1,4 +1,10 @@
-import { Alert, Button, FormControl, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Button,
+  FormControl,
+  TextField,
+  Typography,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import "./Logincss.css";
 import Logo from "./capstoneLogo.png";
@@ -11,16 +17,16 @@ function Login() {
     email: "",
     password: "",
   });
-  const token = localStorage.getItem('login_token')
+  const token = localStorage.getItem("login_token");
   useEffect(() => {
-    token ? navigation('/home') : navigation('/login')
-  }, [])
+    token ? navigation("/home") : navigation("/login");
+  }, []);
 
   const [error, setError] = useState("");
   const [submitLoading, setsubmitLoading] = useState(false);
 
   const handleLogin = async (event) => {
-    event.preventDefault();
+    event?.preventDefault();
     setError("");
     setsubmitLoading(true);
 
@@ -39,7 +45,7 @@ function Login() {
         /* localStorage.setItem("username", response.data.user.username);
         localStorage.setItem("email", response.data.user.email);
         localStorage.setItem("phonenumber", response.data.user.phonenumber); */
-        localStorage.setItem('user', JSON.stringify(response.data.user));
+        localStorage.setItem("user", JSON.stringify(response.data.user));
         console.log(response);
         navigation("/home");
       } catch (error) {
@@ -49,12 +55,16 @@ function Login() {
       }
       setsubmitLoading(false);
     }
-  }
+  };
 
-  const buttonClick = async () => {
-    
-    
-  }
+  const buttonClick = async () => {};
+
+  const enterPressed = (event) => {
+    console.log(event.key)
+    if (event.key === "Enter") {
+      handleLogin();
+    }
+  };
 
   const validateForm = () => {
     if (formData.email === undefined || formData.email === "") {
@@ -77,7 +87,9 @@ function Login() {
 
   return (
     <div className="loginRoot">
-      <Link to='/'><img src={Logo} alt="logo" style={{ marginTop: "50px" }} /></Link>
+      <Link to="/">
+        <img src={Logo} alt="logo" style={{ marginTop: "50px" }} />
+      </Link>
       {error && <Alert severity="error">{error}</Alert>}
       <FormControl className="formControl">
         <TextField
@@ -87,6 +99,7 @@ function Login() {
           fullWidth
           required
           onChange={handleChange}
+          onKeyUp={enterPressed}
         />
         <TextField
           label="password"
@@ -96,6 +109,7 @@ function Login() {
           fullWidth
           required
           onChange={handleChange}
+          onKeyUp={enterPressed}
         />
         <Button
           className="loginButton"
@@ -116,7 +130,12 @@ function Login() {
           Forgot Password
         </Button>
       </FormControl>
-      <Typography variant="p">Don't Have an Account? <Link to='/register' style={{textDecoration: 'none', color: 'blue'}}>Register</Link> </Typography>
+      <Typography variant="p">
+        Don't Have an Account?{" "}
+        <Link to="/register" style={{ textDecoration: "none", color: "blue" }}>
+          Register
+        </Link>{" "}
+      </Typography>
     </div>
   );
 }

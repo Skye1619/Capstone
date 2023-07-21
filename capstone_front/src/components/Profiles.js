@@ -48,6 +48,14 @@ function Profiles() {
   const [updating, setUpdating] = useState(false);
   const [deleting, setDeleting] = useState(false)
   const confirmRef = useRef(null);
+  const [listForm, setListForm] = useState({
+    hotel_name: '',
+    hotel_details: '',
+    hotel_address: '',
+    rating: '',
+    price_id: '',
+    owner_id: '',
+  });
 
   const [FormData, setFormData] = useState({
     username: "",
@@ -186,10 +194,6 @@ function Profiles() {
     }
   }, [open, listOpen]);
 
-  /* const username = localStorage.getItem('username');
-  const email = localStorage.getItem('email');
-  const phonenumber = localStorage.getItem('phonenumber'); */
-
   const handleConfirmClose = () => {
     setconfirmOpen(false);
   };
@@ -198,6 +202,10 @@ function Profiles() {
     if (operation === "logout") {
       localStorage.clear();
       navigate("/");
+    }
+
+    if (operation === 'list') {
+      
     }
 
     if (operation === "edit") {
@@ -552,7 +560,7 @@ function Profiles() {
               type="submit"
               variant="contained"
               color="primary"
-              onClick={() => handleButton("edit")}
+              onClick={() => handleButton("list")}
               fullWidth
             >
               Confirm Listing

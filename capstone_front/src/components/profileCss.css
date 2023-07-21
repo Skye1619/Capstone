@@ -21,6 +21,11 @@
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
   -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
   -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+  overflow-y: auto;
+}
+
+.profileContainer::-webkit-scrollbar {
+  display: none;
 }
 
 .profileImagePlaceholder {
@@ -29,6 +34,7 @@
   border-radius: 50%;
   background-color: green;
   margin-bottom: 10px;
+  min-height: 120px;
 }
 
 .profileDetails {

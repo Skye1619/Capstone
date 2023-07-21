@@ -4,6 +4,8 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\PriceResource;
+use App\Http\Resources\UserResource;
 
 class HotelResources extends JsonResource
 {
@@ -19,10 +21,10 @@ class HotelResources extends JsonResource
             'hotel_name' => $this->hotel_name,
             'hotel_details' => $this->hotel_details,
             'hotel_address' => $this->hotel_address,
-            'price_id' => $this->price->getAttributes(),
+            'price' => new PriceResource($this->price),
             'rating' => $this->rating,
             'image_url' => $this->image_url,
-            'owner_id' => $this->owner_id
+            'owner' => new UserResource($this->user),
         ];
     }
 }

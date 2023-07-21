@@ -15,6 +15,13 @@ class UserController extends Controller
     public function index()
     {
         //
+        $user = User::all();
+        $response = [
+            'code' => 200,
+            'message' => 'Successfully Retrieval of User!',
+            'user' => UserResource::collection($user)
+        ];
+        return $response;
         
     }
 
@@ -33,6 +40,14 @@ class UserController extends Controller
     public function show(string $id)
     {
         //
+        $user = UserResource::findOrFail($id);
+        $response = [
+            'code' => 200,
+            'message' => 'User successfully retrieved',
+            'user' => new UserResource($user)
+        ];
+
+        return $response;
     }
 
     /**
