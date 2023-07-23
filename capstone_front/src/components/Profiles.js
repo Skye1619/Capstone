@@ -46,15 +46,17 @@ function Profiles() {
   const [deactivateOpen, setDeactivateOpen] = useState(false);
   const [listOpen, setListOpen] = useState(false);
   const [updating, setUpdating] = useState(false);
-  const [deleting, setDeleting] = useState(false)
+  const [deleting, setDeleting] = useState(false);
+  const [listing, setListing] = useState(false);
+  const [tostError, setTostError] = useState("");
   const confirmRef = useRef(null);
   const [listForm, setListForm] = useState({
-    hotel_name: '',
-    hotel_details: '',
-    hotel_address: '',
-    rating: '',
-    price_id: '',
-    owner_id: '',
+    hotel_name: "",
+    hotel_details: "",
+    hotel_address: "",
+    rating: "",
+    price_id: "",
+    owner_id: "",
   });
 
   const [FormData, setFormData] = useState({
@@ -79,7 +81,7 @@ function Profiles() {
   };
 
   const deactivateConfirm = () => {
-    console.log(confirmRef.current.value)
+    console.log(confirmRef.current.value);
     if (confirmRef.current.value === "Confirm") {
       // Confirm the Account Deactivation
       setDeleting(true);
@@ -114,7 +116,7 @@ function Profiles() {
               "aria-live": "polite",
             },
           });
-          navigate('/login')
+          navigate("/login");
           window.location.reload();
         } catch (error) {
           toast(error.response.errors.message, {
@@ -166,6 +168,8 @@ function Profiles() {
     setOpen(false);
     setListOpen(false);
     setDeactivateOpen(false);
+    setFormData('')
+    setValue(0);
   };
 
   const [priceForm, setpriceForm] = useState(undefined);
@@ -186,10 +190,15 @@ function Profiles() {
         hotel_name: "",
         hotel_details: "",
         hotel_address: "",
-        price_id: "",
+        price_id: {
+          short: "",
+          long: "",
+          overnight: "",
+          whole_day: "",
+        },
         rating: "",
         image_url: "",
-        owner_id: user.id,
+        owner_id: "",
       });
     }
   }, [open, listOpen]);
@@ -198,14 +207,117 @@ function Profiles() {
     setconfirmOpen(false);
   };
 
+  const getToast = (message) => {
+    toast(message, {
+      duration: 2000,
+      position: "top-center",
+
+      style: { zIndex: "1000000" },
+      className: "myToast",
+
+      icon: "",
+
+      iconTheme: {
+        primary: "#000",
+        secondary: "#fff",
+      },
+
+      ariaProps: {
+        role: "status",
+        "aria-live": "polite",
+      },
+    });
+  };
+
   const handleButton = (operation) => {
     if (operation === "logout") {
       localStorage.clear();
       navigate("/");
     }
 
-    if (operation === 'list') {
-      
+    if (operation === "list") {
+      setListing(true);
+      if (FormData.hotel_name === "" || FormData.hotel_name === undefined) {
+        getToast("Hotel Name is required");
+        setListing(false);
+        return;
+      }
+      if (
+        FormData.hotel_details === "" ||
+        FormData.hotel_details === undefined
+      ) {
+        getToast("Hotel Details is required");
+        setListing(false);
+        return;
+      }
+      if (
+        FormData.hotel_address === "" ||
+        FormData.hotel_address === undefined
+      ) {
+        getToast("Hotel Address is required");
+        setListing(false);
+        return;
+      }
+      if (FormData.rating === "" || FormData.rating === undefined) {
+        getToast("Rating is required");
+        setListing(false);
+        return;
+      }
+      if (
+        FormData.price_id.short === "" ||
+        FormData.price_id.short === undefined
+      ) {
+        getToast("Price is required");
+        setListing(false);
+        return;
+      }
+      if (
+        FormData.price_id.long === "" ||
+        FormData.price_id.long === undefined
+      ) {
+        getToast("Price is required");
+        setListing(false);
+        return;
+      }
+      if (
+        FormData.price_id.overnight === "" ||
+        FormData.price_id.overnight === undefined
+      ) {
+        getToast("Price is required");
+        setListing(false);
+        return;
+      }
+      if (
+        FormData.price_id.whole_day === "" ||
+        FormData.price_id.whole_day === undefined
+      ) {
+        getToast("Price is required");
+        setListing(false);
+        return;
+      }
+
+      const fetchData = async () => {
+        try {
+          const response = await axios.post(`http://127.0.0.1:8000/api/hotels`, FormData, {
+            headers: {
+              Authorization: 'Bearer ' + localStorage.getItem('login_token')
+            }
+          })
+
+          setListing(false)
+          getToast('Your Property is on the list')
+          handleClose()
+        } catch (error) {
+          console.log(error)
+          getToast('Error loading')
+          setListing(false)
+          handleClose()
+        }
+      }
+
+      fetchData()
+
+      console.log(FormData)
     }
 
     if (operation === "edit") {
@@ -289,32 +401,36 @@ function Profiles() {
             <div className="listPriceDiv">
               <TextField
                 label="3Hrs"
-                name="3hrs"
+                name="short"
                 variant="outlined"
+                type="number"
                 onChange={handleChange}
                 fullWidth
                 required
               />
               <TextField
                 label="6Hrs"
-                name="6hrs"
+                name="long"
                 variant="outlined"
+                type="number"
                 onChange={handleChange}
                 fullWidth
                 required
               />
               <TextField
                 label="12Hrs"
-                name="12hrs"
+                name="overnight"
                 variant="outlined"
+                type="number"
                 onChange={handleChange}
                 fullWidth
                 required
               />
               <TextField
                 label="24Hrs"
-                name="24hrs"
+                name="whole_day"
                 variant="outlined"
+                type="number"
                 onChange={handleChange}
                 fullWidth
                 required
@@ -325,11 +441,53 @@ function Profiles() {
   };
 
   const handleChange = (event) => {
-    console.log(FormData);
-    setFormData((prevState) => ({
-      ...prevState,
-      [event.target.name]: event.target.value,
-    }));
+    if (event.target.name === "rating") {
+      setValue(event.target.value);
+    }
+
+    if (event.target.name === "short") {
+      setFormData((prevState) => ({
+        ...prevState,
+        price_id: {
+          ...prevState.price_id,
+          [event.target.name]: event.target.value,
+        },
+      }));
+    } else if (event.target.name === 'long') {
+      setFormData((prevState) => ({
+        ...prevState,
+        price_id: {
+          ...prevState.price_id,
+          [event.target.name]: event.target.value,
+        },
+      }));
+
+    } else if (event.target.name === 'overnight') {
+      setFormData((prevState) => ({
+        ...prevState,
+        price_id: {
+          ...prevState.price_id,
+          [event.target.name]: event.target.value,
+        },
+      }));
+
+    } else if (event.target.name === 'whole_day') {
+      setFormData((prevState) => ({
+        ...prevState,
+        price_id: {
+          ...prevState.price_id,
+          [event.target.name]: event.target.value,
+        },
+      }));
+
+    } else {
+        setFormData((prevState) => ({
+          ...prevState,
+          [event.target.name]: event.target.value,
+        }));
+    }
+
+
   };
 
   return (
@@ -500,7 +658,7 @@ function Profiles() {
             </Typography>
             <TextField
               label="Hotel/Company Name"
-              name="hotel/company name"
+              name="hotel_name"
               variant="outlined"
               onChange={handleChange}
               fullWidth
@@ -508,7 +666,7 @@ function Profiles() {
             />
             <TextField
               label="Description"
-              name="description"
+              name="hotel_details"
               variant="outlined"
               onChange={handleChange}
               fullWidth
@@ -516,7 +674,7 @@ function Profiles() {
             />
             <TextField
               label="Address"
-              name="address"
+              name="hotel_address"
               variant="outlined"
               onChange={handleChange}
               fullWidth
@@ -531,11 +689,9 @@ function Profiles() {
             >
               <Typography variant="p">Hotel Rating :</Typography>
               <Rating
-                name="controlled_rating"
-                value={value}
-                onChange={(event, newValue) => {
-                  setValue(newValue);
-                }}
+                name="rating"
+                value={parseInt(value, 10)}
+                onChange={handleChange}
               />
             </div>
             <div
@@ -562,8 +718,9 @@ function Profiles() {
               color="primary"
               onClick={() => handleButton("list")}
               fullWidth
+              disabled={listing ? true : false}
             >
-              Confirm Listing
+              {listing ? <PulseLoader color="#2196f3" /> : 'Confirm Listing'}
             </Button>
             <Button
               className="profileButtons"
@@ -630,8 +787,11 @@ function Profiles() {
               onClick={deactivateConfirm}
               disabled={deleting ? true : false}
             >
-              {deleting ? <PulseLoader color="#2196f3" />: 'Confirm Delete my Account'}
-              
+              {deleting ? (
+                <PulseLoader color="#2196f3" />
+              ) : (
+                "Confirm Delete my Account"
+              )}
             </Button>
             <Button
               className="profileButtons"

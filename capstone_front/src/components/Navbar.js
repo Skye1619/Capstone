@@ -21,7 +21,9 @@ import {
   ListItemButton,
   ListItemText,
 } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -70,7 +72,9 @@ const navItems = ["Profile", "Home", "About", "Logout"];
 
 export default function SearchAppBar(props) {
   const { window } = props;
+  const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [searchValue, setSearchValue] = React.useState("");
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
@@ -82,8 +86,75 @@ export default function SearchAppBar(props) {
     } else if (item === "About") {
     } else if (item === "Logout") {
       localStorage.clear();
-      console.log('logged out', item);
+      console.log("logged out", item);
     }
+  };
+
+  const searchChange = (event) => {
+    setSearchValue((prevState) => event.target.value);
+    console.log(searchValue);
+  };
+
+  const searchNow = (event) => {
+    if (event.key === "Enter") {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(
+            `http://127.0.0.1:8000/api/hotels/${searchValue.replace(
+              / /g,
+              "_"
+            )}`,
+            {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem("login_token"),
+              },
+            }
+          );
+          console.log(response.data.hotels);
+          if (response.data.message === "Hotel not found") {
+            localStorage.removeItem("search_item");
+            getToast(response.data.message);
+            navigate(searchValue);
+            event.view.location.reload()
+          } else {
+            localStorage.removeItem("search_item");
+            navigate(searchValue);
+            getToast(response.data.message);
+            console.log(response.data)
+            localStorage.setItem("search_item", JSON.stringify(response.data));
+            event.view.location.reload()
+          }
+        } catch (error) {
+          console.error(error);
+          getToast("Error");
+        }
+      };
+
+      fetchData();
+      
+    }
+  };
+
+  const getToast = (message) => {
+    toast(message, {
+      duration: 2000,
+      position: "top-center",
+
+      style: { zIndex: "1000000" },
+      className: "myToast",
+
+      icon: "",
+
+      iconTheme: {
+        primary: "#000",
+        secondary: "#fff",
+      },
+
+      ariaProps: {
+        role: "status",
+        "aria-live": "polite",
+      },
+    });
   };
 
   const drawer = (
@@ -152,7 +223,9 @@ export default function SearchAppBar(props) {
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
+              inputProps={{ "aria-label": "search", 'className': 'searchField' }}
+              onChange={searchChange}
+              onKeyUp={searchNow}
             />
           </Search>
         </Toolbar>

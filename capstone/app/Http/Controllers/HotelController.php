@@ -7,6 +7,7 @@ use App\Models\Price;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Hotel;
+use Faker\Factory as Faker;
 
 
 class HotelController extends Controller
@@ -38,7 +39,6 @@ class HotelController extends Controller
             'hotel_details' => 'required|string',
             'hotel_address' => 'required|string',
             'rating' => 'required|numeric',
-            'image_url' => 'nullable|string',
             'price_id' => 'required|array',
             'price_id.short' => 'required|numeric',
             'price_id.long' => 'required|numeric',
@@ -46,10 +46,8 @@ class HotelController extends Controller
             'price_id.whole_day' => 'required|numeric',
         ]);
     
-        // Extract price data from the request
         $priceData = $request->input('price_id');
     
-        // Create a new price record
         $price = Price::create([
             'short' => $priceData['short'],
             'long' => $priceData['long'],
@@ -59,15 +57,14 @@ class HotelController extends Controller
 
         $ownerId = Auth::id();
     
-        // Create the new hotel record with the associated price_id
         $hotel = Hotel::create([
             'hotel_name' => $request->input('hotel_name'),
             'hotel_details' => $request->input('hotel_details'),
             'hotel_address' => $request->input('hotel_address'),
             'rating' => $request->input('rating'),
             'owner_id' => $ownerId,
-            'image_url' => $request->input('image_url'),
-            'price_id' => $price->id, // Use the created price's ID as the value for price_id
+            'image_url' => Faker::create()->imageUrl($width = 400, $height = 600, 'hotel', true),
+            'price_id' => $price->id, 
         ]);
     
         return new HotelResources($hotel);
@@ -88,13 +85,21 @@ class HotelController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $hotel_name)
     {
         //
-        $hotel = Hotel::findOrFail($id);
+        $hotel = Hotel::where('hotel_name', 'LIKE', '%' . $hotel_name . '%')->get();
+
+        if ($hotel->isEmpty()) {
+            return [
+                'code' => 404,
+                'message' => 'Hotel not found'
+            ];
+        }
+
         $response = [
             'code' => 200,
-            'message' => 'Hotel Successfully Retrieve!',
+            'message' => 'Hotel Found! Happy Booking',
             'hotels' => HotelResources::collection($hotel)
         ];
 
