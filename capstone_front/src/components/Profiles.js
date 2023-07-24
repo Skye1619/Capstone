@@ -37,6 +37,8 @@ const style = {
 };
 
 function Profiles() {
+
+  const backendApi = process.env.BACKEND_URL
   const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
 
@@ -88,7 +90,7 @@ function Profiles() {
       const fetchData = async () => {
         try {
           const response = await axios.delete(
-            `http://127.0.0.1:8000/api/user/profile/${user.email}`,
+            `${backendApi}/user/profile/${user.email}`,
             {
               headers: {
                 Authorization: "Bearer " + localStorage.getItem("login_token"),
@@ -298,7 +300,7 @@ function Profiles() {
 
       const fetchData = async () => {
         try {
-          const response = await axios.post(`http://127.0.0.1:8000/api/hotels`, FormData, {
+          const response = await axios.post(`${backendApi}/hotels`, FormData, {
             headers: {
               Authorization: 'Bearer ' + localStorage.getItem('login_token')
             }
@@ -325,7 +327,7 @@ function Profiles() {
       const fetchData = async () => {
         try {
           const response = await axios.put(
-            `http://127.0.0.1:8000/api/user/profile/${user.email}`,
+            `${backendApi}/user/profile/${user.email}`,
             FormData,
             {
               headers: {

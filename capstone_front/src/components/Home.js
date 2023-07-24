@@ -37,6 +37,9 @@ const style = {
 };
 
 function Home() {
+
+  const backendApi = process.env.BACKEND_URL
+
   const [data, setData] = useState([]);
   const [loading, setloading] = useState(true);
   const [page, setpage] = useState(1);
@@ -51,7 +54,7 @@ function Home() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://127.0.0.1:8000/api/home?page=${page}`,
+          `${backendApi}/home?page=${page}`,
           {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("login_token"),
