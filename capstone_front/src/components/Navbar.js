@@ -71,6 +71,8 @@ const drawerWidth = 240;
 const navItems = ["Profile", "Home", "About", "Logout"];
 
 export default function SearchAppBar(props) {
+
+  const backendApi = process.env.BACKEND_URL
   const { window } = props;
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -100,7 +102,7 @@ export default function SearchAppBar(props) {
       const fetchData = async () => {
         try {
           const response = await axios.get(
-            `http://127.0.0.1:8000/api/hotels/${searchValue.replace(
+            `${backendApi}/hotels/${searchValue.replace(
               / /g,
               "_"
             )}`,

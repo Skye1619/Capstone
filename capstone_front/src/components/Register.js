@@ -5,6 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function Register() {
+
+  const backendApi = process.env.BACKEND_URL
   const navigate = useNavigate();
   const [Loading, setLoading] = useState(false);
   const [Error, setError] = useState("");
@@ -40,7 +42,7 @@ function Register() {
     } else {
       try {
         const response = await axios.post(
-          "http://127.0.0.1:8000/api/register",
+          `${backendApi}/register`,
           FormData
         );
         const token = response.data.token;

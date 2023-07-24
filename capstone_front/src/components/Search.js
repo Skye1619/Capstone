@@ -83,7 +83,7 @@ function Search() {
 
         {searchItem ? (
           loading ? (
-            <div className="searchBody">
+            <div style={{width: '100%'}}>
               <Skeleton animation="wave" width="20%">
                 <Typography variant="h6">.</Typography>
               </Skeleton>

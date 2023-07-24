@@ -12,6 +12,8 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
+
+  const backendApi = process.env.BACKEND_URL
   const navigation = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
@@ -37,7 +39,7 @@ function Login() {
       console.log("logging in");
       try {
         const response = await axios.post(
-          "http://127.0.0.1:8000/api/login",
+          `${backendApi}/login`,
           formData
         );
         const token = response.data.token;
