@@ -1,8 +1,12 @@
 <?php
 
+use App\Http\Controllers\HotelController;
+use App\Http\Controllers\PriceController;
 use App\Http\Controllers\UserAuthenticationController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +24,11 @@ use Illuminate\Support\Facades\Route;
 }); */
 
 Route::post('/register', [UserAuthenticationController::class, 'register']);
+Route::post('/login', [UserAuthenticationController::class, 'login']);
+
+Route::middleware('auth:api')->group(function () {
+    Route::resource('/home', HotelController::class);
+    Route::resource('/user/profile', UserController::class);
+    Route::resource('/price', PriceController::class);
+    Route::resource('/hotels', HotelController::class);
+});

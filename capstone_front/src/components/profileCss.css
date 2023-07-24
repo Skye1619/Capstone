@@ -1,0 +1,111 @@
+.profileRoot {
+  box-sizing: border-box;
+  width: 100%;
+  height: calc(100% - 65px) !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.profileContainer {
+  width: 100%;
+  max-width: 500px;
+  height: 95%;
+  box-sizing: border-box;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+  overflow-y: auto;
+}
+
+.profileContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.profileImagePlaceholder {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: green;
+  margin-bottom: 10px;
+  min-height: 120px;
+}
+
+.profileDetails {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.detailsRow {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.detailsRow span:first-of-type {
+  font-weight: bold;
+}
+
+.detailsRow span:last-of-type {
+  color: #333;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.profileButtons:hover {
+  background: rgb(0, 117, 70) !important;
+}
+
+.editForm {
+  min-width: 280px !important;
+  box-sizing: border-box;
+  padding: 0 10px;
+  scrollbar-width: thin !important;
+  scrollbar-color: #aaa #dfe9eb !important;
+}
+
+.listPriceDiv {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.editForm::-webkit-scrollbar {
+  width: 10px !important;
+  width: 10px !important;
+}
+.editForm::-webkit-scrollbar-track {
+  border-radius: 5px !important;
+  background-color: #dfe9eb !important;
+}
+.editForm::-webkit-scrollbar-track:hover {
+  background-color: #b8c0c2 !important;
+}
+.editForm::-webkit-scrollbar-track:active {
+  background-color: #b8c0c2 !important;
+}
+.editForm::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: #aaa !important;
+}
+.editForm::-webkit-scrollbar-thumb:hover {
+  background-color: #999 !important;
+}
+.editForm::-webkit-scrollbar-thumb:active {
+  background-color: #999 !important;
+}
+
+.myToast {
+  text-align: center;
+  border: 1px solid red;
+  margin: 10px !important;
+}
+.go2358747891 {
+  min-width: unset !important;
+}

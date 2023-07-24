@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use App\Models\Hotel;
 
 class User extends Authenticatable
 {
@@ -17,12 +18,19 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+    public function hotel() {
+        return $this->hasMany(Hotel::class);
+    }
+
+    protected $table = 'users';
     protected $fillable = [
         'username',
         'email',
         'password',
         'age',
-        'phonenumber'
+        'phonenumber',
+        'email_verified_at',
     ];
 
     /**

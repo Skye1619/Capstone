@@ -9,6 +9,7 @@ import InputBase from "@mui/material/InputBase";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import Logo from "./capstoneLogo.png";
+import keyLogo from "./reservaKey.png";
 import "./navbarCss.css";
 import {
   Card,
@@ -20,6 +21,9 @@ import {
   ListItemButton,
   ListItemText,
 } from "@mui/material";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -64,28 +68,122 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const drawerWidth = 240;
-const navItems = ["Profile", "Hotels", "About", "Logout"];
+const navItems = ["Profile", "Home", "About", "Logout"];
 
 export default function SearchAppBar(props) {
   const { window } = props;
+  const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [searchValue, setSearchValue] = React.useState("");
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
+  };
+  /* const navigate = useNavigate() */
+
+  const drawerItemClick = (item) => {
+    if (item === "Profile") {
+    } else if (item === "Home") {
+    } else if (item === "About") {
+    } else if (item === "Logout") {
+      localStorage.clear();
+      console.log("logged out", item);
+    }
+  };
+
+  const searchChange = (event) => {
+    setSearchValue((prevState) => event.target.value);
+    console.log(searchValue);
+  };
+
+  const searchNow = (event) => {
+    if (event.key === "Enter") {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(
+            `http://127.0.0.1:8000/api/hotels/${searchValue.replace(
+              / /g,
+              "_"
+            )}`,
+            {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem("login_token"),
+              },
+            }
+          );
+          console.log(response.data.hotels);
+          if (response.data.message === "Hotel not found") {
+            localStorage.removeItem("search_item");
+            getToast(response.data.message);
+            navigate(searchValue);
+            event.view.location.reload()
+          } else {
+            localStorage.removeItem("search_item");
+            navigate(searchValue);
+            getToast(response.data.message);
+            console.log(response.data)
+            localStorage.setItem("search_item", JSON.stringify(response.data));
+            event.view.location.reload()
+          }
+        } catch (error) {
+          console.error(error);
+          getToast("Error");
+        }
+      };
+
+      fetchData();
+      
+    }
+  };
+
+  const getToast = (message) => {
+    toast(message, {
+      duration: 2000,
+      position: "top-center",
+
+      style: { zIndex: "1000000" },
+      className: "myToast",
+
+      icon: "",
+
+      iconTheme: {
+        primary: "#000",
+        secondary: "#fff",
+      },
+
+      ariaProps: {
+        role: "status",
+        "aria-live": "polite",
+      },
+    });
   };
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <div className="drawerDivCard">
-        <Card sx={{ maxWidth: "240px" }}>
-          <CardMedia sx={{ height: 140 }} image={Logo} title="green iguana" />
+        <Card sx={{ maxWidth: "240px", boxShadow: "none" }}>
+          <Link to="/home">
+            <CardMedia sx={{ height: 140 }} image={Logo} />
+          </Link>
         </Card>
       </div>
       <Divider />
-      <List>
+      <List sx={{ padding: "10px" }}>
         {navItems.map((item) => (
           <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: "center" }}>
-              <ListItemText primary={item} />
+            <ListItemButton
+              sx={{ textAlign: "center", marginTop: "10px", boxShadow: 3 }}
+              color="primary"
+              onClick={() => drawerItemClick(item)}
+            >
+              {item === "Logout" ? (
+                <Link to="/login" className="drawerLink">
+                  <ListItemText primary={item} />
+                </Link>
+              ) : (
+                <Link to={item.toLocaleLowerCase()} className="drawerLink">
+                  <ListItemText primary={item} />
+                </Link>
+              )}
             </ListItemButton>
           </ListItem>
         ))}
@@ -97,7 +195,7 @@ export default function SearchAppBar(props) {
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1 }} className="navbarRoot">
       <AppBar position="static" color="primary">
         <Toolbar>
           <IconButton
@@ -110,21 +208,24 @@ export default function SearchAppBar(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-          >
-            MUI
-          </Typography>
-          <Search>
+          <div style={{ width: "100%" }} className="keyDiv">
+            <Link to="/home">
+              <img
+                src={keyLogo}
+                alt="Logo"
+                style={{ height: "100%", maxHeight: "56px" }}
+              />
+            </Link>
+          </div>
+          <Search className="searchRoot">
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
+              inputProps={{ "aria-label": "search", 'className': 'searchField' }}
+              onChange={searchChange}
+              onKeyUp={searchNow}
             />
           </Search>
         </Toolbar>

@@ -1,11 +1,17 @@
 import { Button } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './landingCss.css'
 import Logo from './capstoneLogo.png'
 
 function Landing() {
+
+    const token = localStorage.getItem('login_token')
     const navigate = useNavigate()
+
+    useEffect(() => {
+      token ? navigate('/home') : navigate('/')
+    }, [])
 
     const buttonClick = (operation) => {
 

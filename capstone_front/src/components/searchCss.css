@@ -1,0 +1,21 @@
+.searchHeader {
+    width: 100%;
+    height: fit-content;
+    /* border: 1px solid red; */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    background: linear-gradient(-90deg, #000000cc, transparent), url('sloganBackground.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-style: italic;
+    padding: 10px;
+    /* padding-left: 50px; */
+}
+
+.searchBody {
+    width: 100%;
+}
