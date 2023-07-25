@@ -6,6 +6,7 @@ import {
   FormControl,
   IconButton,
   Modal,
+  Rating,
   Skeleton,
   TextField,
   Typography,
@@ -35,7 +36,10 @@ const style = {
 };
 
 function Search() {
+
+  const backendApi = process.env.REACT_APP_BACKEND_API;
   const [loading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [hotelItems, setHotelItems] = useState("");
   const [booknowOpen, setbooknowOpen] = useState(false);
@@ -52,6 +56,28 @@ function Search() {
     console.log(searchItem);
   }, []);
 
+  useEffect(() => {
+    const element = document.querySelector(".searchRoot");
+    element.scrollTo({
+      top: 0,
+      /* behavior: "smooth", */
+    });
+
+    loading
+      ? setHotelItems(
+          Array.from(new Array(20)).map((item, index) =>
+            item ? undefined : (
+              <Skeleton
+                key={index}
+                variant="rectagular"
+                sx={{ width: "100%", height: "180px", borderRadius: "5px" }}
+              />
+            )
+          )
+        )
+      : setHotelItems(populateData());
+  }, [loading]);
+
   const handleSeeMore = () => {};
 
   const handleBookCancel = () => {};
@@ -64,9 +90,56 @@ function Search() {
 
   const categoryChoose = () => {};
 
+  const booknowClick = (data) => {
+    setbooknowOpen(true);
+    setmodalFormData(data);
+  };
+
   const searchClick = () => {
     const searchField = document.querySelector('.searchField')
     searchField.focus()
+  };
+
+  const populateData = () => {
+    return data.map((hotel) => {
+      const hotelName = hotel.hotel_name;
+      const hotelDetails = hotel.hotel_details;
+      const hotelAddress = hotel.hotel_address;
+      const rating = hotel.rating;
+      const image = hotel.image_url;
+      const id = hotel.id;
+
+      return (
+        <div key={id} className="hotelCard">
+          <img
+            style={{ width: "100%", maxWidth: "120px", flex: "1 0" }}
+            src={image}
+            alt="Hotel Image"
+            loading="lazy"
+          />
+          <div className="cardDetailsDiv">
+            <h5 style={{ margin: 0 }}>{hotelName}</h5>
+            <Rating
+              name="read-only"
+              value={rating}
+              readOnly
+              sx={{ marginBottom: "3px" }}
+            />
+            <p style={{ margin: 0, fontSize: "small" }}>{hotelDetails}</p>
+          </div>
+          <div className="addressDiv">
+            <p style={{ fontSize: "small" }}>{hotelAddress}</p>
+            <Button
+              variant="contained"
+              className="booknowButton"
+              onClick={() => booknowClick(hotel)}
+            >
+              Book now
+            </Button>
+          </div>
+        </div>
+      );
+    });
   };
 
   return (
@@ -83,15 +156,18 @@ function Search() {
 
         {searchItem ? (
           loading ? (
+            /* IF SEARCHING OR LOADING */
             <div style={{width: '100%'}}>
               <Skeleton animation="wave" width="20%">
                 <Typography variant="h6">.</Typography>
               </Skeleton>
+              <div className="searchListContainer">{hotelItems}</div>
               <Skeleton sx={{ margin: "50px auto 0 auto" }} animation="wave">
                 <Button>See More</Button>
               </Skeleton>
             </div>
           ) : (
+            /* IF THE RESULT IS FOUND */
             <div className="searchBody">
               <Typography variant="h6" className="searchListTitle">
                 Find Your Hotels{" "}
@@ -105,6 +181,7 @@ function Search() {
                   Page: {page}
                 </span>
               </Typography>
+              <div className="searchListContainer">{hotelItems}</div>
               <Button
                 className="seemoreButton"
                 onClick={handleSeeMore}
@@ -115,6 +192,7 @@ function Search() {
             </div>
           )
         ) : (
+          /* IF SEARCH RESULT NOT FOUND */
           <div className="searchBody">
             <Typography
               variant="h4"
@@ -130,7 +208,7 @@ function Search() {
           </div>
         )}
 
-        <div className="searchListContainer">{hotelItems}</div>
+        
       </div>
       <Modal
         open={booknowOpen}

@@ -38,7 +38,7 @@ const style = {
 
 function Home() {
 
-  const backendApi = process.env.BACKEND_URL
+  const backendApi = process.env.REACT_APP_BACKEND_API
 
   const [data, setData] = useState([]);
   const [loading, setloading] = useState(true);

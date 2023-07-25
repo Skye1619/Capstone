@@ -38,7 +38,7 @@ const style = {
 
 function Profiles() {
 
-  const backendApi = process.env.BACKEND_URL
+  const backendApi = process.env.REACT_APP_BACKEND_API
   const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
 
