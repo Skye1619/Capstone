@@ -43,15 +43,8 @@ function Login() {
         // );
         // console.log("a", a);
         const response = await axios.post(
-          `http://ec2-52-70-87-140.compute-1.amazonaws.com/api/login`,
+          `http://ec2-3-84-188-199.compute-1.amazonaws.com/api/login`,
           formData,
-          {
-            withCredentials: true,
-            headers: {
-              "Content-Type": "application/json",
-              "Accept": "application/json",
-            },
-          }
         );
         // const response = await fetch(`${backendApi}/login`,{
         //   method: 'POST',
