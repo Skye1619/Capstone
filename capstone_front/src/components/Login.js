@@ -36,14 +36,30 @@ function Login() {
       setsubmitLoading(false);
       return;
     } else {
-      console.log("logging in");
+      console.log("logging");
       try {
+        // const a = await axios.get(
+        //   "https://reservacapstone.000webhostapp.com/api/test"
+        // );
+        // console.log("a", a);
         const response = await axios.post(
-          `${backendApi}/login`,
-          formData,{
-            headers : { 'Content-Type': 'application/json','Accept': 'application/json'}
+          `http://ec2-52-70-87-140.compute-1.amazonaws.com/api/login`,
+          formData,
+          {
+            withCredentials: true,
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json",
+            },
           }
         );
+        // const response = await fetch(`${backendApi}/login`,{
+        //   method: 'POST',
+        //   mode: 'cors',
+        //   headers: { 'Host':'http://localhost:3000','Content-Type': 'application/json' },
+        //   body: JSON.stringify(formData),
+        // });
+        console.log(response);
         const token = response.data.token;
         localStorage.setItem("login_token", token);
         /* localStorage.setItem("username", response.data.user.username);
@@ -64,7 +80,7 @@ function Login() {
   const buttonClick = async () => {};
 
   const enterPressed = (event) => {
-    console.log(event.key)
+    console.log(event.key);
     if (event.key === "Enter") {
       handleLogin();
     }
