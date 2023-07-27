@@ -15,6 +15,7 @@ import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import SearchIcon from '@mui/icons-material/Search';
+import toast from "react-hot-toast";
 
 const style = {
   display: "flex",
@@ -33,6 +34,28 @@ const style = {
   borderRadius: "5px",
   boxSizing: "border-box",
   p: 4,
+};
+
+const getToast = (message) => {
+  toast(message, {
+    duration: 2000,
+    position: "top-center",
+
+    style: { zIndex: "1000000" },
+    className: "myToast",
+
+    icon: "",
+
+    iconTheme: {
+      primary: "#000",
+      secondary: "#fff",
+    },
+
+    ariaProps: {
+      role: "status",
+      "aria-live": "polite",
+    },
+  });
 };
 
 function Search() {
@@ -54,7 +77,17 @@ function Search() {
 
   useEffect(() => {
     console.log(searchItem);
+    setData(searchItem?.hotels)
   }, []);
+  
+  useEffect(() => {
+    console.log(data);
+    if (data?.length !== 0) {
+      getToast(searchItem ? searchItem.message: 'Hotel not found');
+      setLoading(false)
+    }
+
+  }, [data])
 
   useEffect(() => {
     const element = document.querySelector(".searchRoot");
@@ -80,15 +113,29 @@ function Search() {
 
   const handleSeeMore = () => {};
 
-  const handleBookCancel = () => {};
+  
+  const handleBookingButton = (operation) => {
+    if (operation === 'cancel') {
+      setbooknowOpen(false);
+    }
+  };
+  
+  const handleBookCancel = () => {
+    setbooknowOpen(false);
+  };
+  
+  const handleCategoryOpen = () => {
+    setcategoryOpen(true);
+  };
 
-  const handleBookingButton = () => {};
+  const handleCategoryClose = () => {
+    setcategoryOpen(false);
+  };
 
-  const handleCategoryOpen = () => {};
-
-  const handleCategoryClose = () => {};
-
-  const categoryChoose = () => {};
+  const categoryChoose = (category) => {
+    setchoosenCategory(category);
+    handleCategoryClose();
+  };
 
   const booknowClick = (data) => {
     setbooknowOpen(true);
@@ -101,7 +148,7 @@ function Search() {
   };
 
   const populateData = () => {
-    return data.map((hotel) => {
+    return data?.map((hotel) => {
       const hotelName = hotel.hotel_name;
       const hotelDetails = hotel.hotel_details;
       const hotelAddress = hotel.hotel_address;
@@ -143,7 +190,7 @@ function Search() {
   };
 
   return (
-    <div className="searchRoot">
+    <div className="searchResultRoot">
       <div className="searchContainer">
         <div className="searchHeader">
           <Typography variant="h3" className="sloganTop slogan">

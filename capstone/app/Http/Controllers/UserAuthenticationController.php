@@ -74,7 +74,7 @@ class UserAuthenticationController extends Controller
                     return response(['error'=> 'Password is invalid'], 422);
                 }
         }else {
-            return response(['error' => 'Email is invalid!'], 422);
+            return response(['error' => 'User not Found!'], 422);
         }
     }
 }

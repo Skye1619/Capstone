@@ -112,13 +112,11 @@ export default function SearchAppBar(props) {
           );
           if (response.data.message === "Hotel not found") {
             localStorage.removeItem("search_item");
-            getToast(response.data.message);
             navigate(searchValue);
             event.view.location.reload()
           } else {
             localStorage.removeItem("search_item");
             navigate(searchValue);
-            getToast(response.data.message);
             localStorage.setItem("search_item", JSON.stringify(response.data));
             event.view.location.reload()
           }

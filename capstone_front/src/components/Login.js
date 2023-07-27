@@ -38,33 +38,20 @@ function Login() {
     } else {
       console.log("logging");
       try {
-        // const a = await axios.get(
-        //   "https://reservacapstone.000webhostapp.com/api/test"
-        // );
-        // console.log("a", a);
         const response = await axios.post(
-          `http://ec2-3-84-188-199.compute-1.amazonaws.com/api/login`,
+          `${backendApi}/login`,
           formData,
         );
-        // const response = await fetch(`${backendApi}/login`,{
-        //   method: 'POST',
-        //   mode: 'cors',
-        //   headers: { 'Host':'http://localhost:3000','Content-Type': 'application/json' },
-        //   body: JSON.stringify(formData),
-        // });
         console.log(response);
         const token = response.data.token;
         localStorage.setItem("login_token", token);
-        /* localStorage.setItem("username", response.data.user.username);
-        localStorage.setItem("email", response.data.user.email);
-        localStorage.setItem("phonenumber", response.data.user.phonenumber); */
         localStorage.setItem("user", JSON.stringify(response.data.user));
         console.log(response);
         navigation("/home");
       } catch (error) {
         console.log(error);
-        /* let errorMessage = error.response.data.error;
-        setError(errorMessage); */
+        let errorMessage = error.response.data.error;
+        setError(errorMessage);
       }
       setsubmitLoading(false);
     }
