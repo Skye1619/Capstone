@@ -84,7 +84,6 @@ function Search() {
   }, [])
 
   useEffect(() => {
-    console.log(searchItem);
     let startIndex = (page - 1) * 20
     let endIndex = startIndex + 20
     const currentData = searchItem?.hotels.slice(startIndex, endIndex);
@@ -97,7 +96,6 @@ function Search() {
   useEffect(() => {
     if (data?.length !== 0) {
       setLoading(false)
-      console.log(data, 'data');
     }
     
   }, [data])

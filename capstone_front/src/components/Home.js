@@ -59,7 +59,6 @@ function Home() {
           },
         });
         let hotels = response.data.hotels;
-        console.log(hotels);
 
         hotels === []
           ? setError(
@@ -72,7 +71,6 @@ function Home() {
           : setData(hotels);
         setloading(false);
       } catch (error) {
-        console.log(error);
         setError(
           <div className="hotelsList">
             <Typography variant="h5" sx={{ textAlign: "center" }}>

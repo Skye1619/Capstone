@@ -25,7 +25,6 @@ function Register() {
   }, [])
 
   const enterPressed = (event) => {
-    console.log(event.key)
     if (event.key === "Enter") {
       handleRegister();
     }

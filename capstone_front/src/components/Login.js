@@ -36,20 +36,16 @@ function Login() {
       setsubmitLoading(false);
       return;
     } else {
-      console.log("logging");
       try {
         const response = await axios.post(
           `${backendApi}/login`,
           formData,
         );
-        console.log(response);
         const token = response.data.token;
         localStorage.setItem("login_token", token);
         localStorage.setItem("user", JSON.stringify(response.data.user));
-        console.log(response);
         navigation("/home");
       } catch (error) {
-        console.log(error);
         let errorMessage = error.response.data.error;
         setError(errorMessage);
       }
@@ -60,7 +56,6 @@ function Login() {
   const buttonClick = async () => {};
 
   const enterPressed = (event) => {
-    console.log(event.key);
     if (event.key === "Enter") {
       handleLogin();
     }
@@ -78,7 +73,6 @@ function Login() {
   };
 
   const handleChange = (event) => {
-    // console.log(event.target.name, event.target.value);
     setFormData((prevstate) => ({
       ...prevstate,
       [event.target.name]: event.target.value,
