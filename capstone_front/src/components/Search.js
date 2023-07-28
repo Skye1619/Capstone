@@ -70,27 +70,40 @@ function Search() {
   const [bookingDate, setbookingDate] = useState(undefined);
   const [choosenCategory, setchoosenCategory] = useState(undefined);
   const [categoryOpen, setcategoryOpen] = useState(false);
+  const [getDisabled, setGetDisabled] = useState(false);
 
   const [searchItem, setSearchItem] = useState(
     JSON.parse(localStorage.getItem("search_item"))
   );
 
   useEffect(() => {
+    getToast(searchItem ? searchItem.message: 'Hotel not found', searchItem);
+    if (searchItem?.hotels <= 20) {
+      setGetDisabled(true)
+    }
+  }, [])
+
+  useEffect(() => {
     console.log(searchItem);
-    setData(searchItem?.hotels)
-  }, []);
+    let startIndex = (page - 1) * 20
+    let endIndex = startIndex + 20
+    const currentData = searchItem?.hotels.slice(startIndex, endIndex);
+    setData(currentData)
+    if (endIndex >= searchItem?.hotels.length) {
+      setGetDisabled(true)
+    }
+  }, [page]);
   
   useEffect(() => {
-    console.log(data);
     if (data?.length !== 0) {
-      getToast(searchItem ? searchItem.message: 'Hotel not found');
       setLoading(false)
+      console.log(data, 'data');
     }
-
+    
   }, [data])
 
   useEffect(() => {
-    const element = document.querySelector(".searchRoot");
+    const element = document.querySelector(".searchResultRoot");
     element.scrollTo({
       top: 0,
       /* behavior: "smooth", */
@@ -111,8 +124,12 @@ function Search() {
       : setHotelItems(populateData());
   }, [loading]);
 
-  const handleSeeMore = () => {};
-
+  const handleSeeMore = () => {
+    setTimeout(() => {
+      setPage(page + 1)
+    }, 1000)
+    setLoading(true);
+  };
   
   const handleBookingButton = (operation) => {
     if (operation === 'cancel') {
@@ -123,7 +140,7 @@ function Search() {
   const handleBookCancel = () => {
     setbooknowOpen(false);
   };
-  
+
   const handleCategoryOpen = () => {
     setcategoryOpen(true);
   };
@@ -201,7 +218,7 @@ function Search() {
           </Typography>
         </div>
 
-        {searchItem ? (
+        {searchItem?.hotels || searchItem?.hotels === [] ? (
           loading ? (
             /* IF SEARCHING OR LOADING */
             <div style={{width: '100%'}}>
@@ -233,6 +250,7 @@ function Search() {
                 className="seemoreButton"
                 onClick={handleSeeMore}
                 variant="contained"
+                disabled={getDisabled}
               >
                 See More
               </Button>

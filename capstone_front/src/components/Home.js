@@ -61,7 +61,15 @@ function Home() {
         let hotels = response.data.hotels;
         console.log(hotels);
 
-        setData(hotels);
+        hotels === []
+          ? setError(
+              <div className="hotelsList">
+                <Typography variant="h5" sx={{ textAlign: "center" }}>
+                  Error Loading Hotels
+                </Typography>
+              </div>
+            )
+          : setData(hotels);
         setloading(false);
       } catch (error) {
         console.log(error);
