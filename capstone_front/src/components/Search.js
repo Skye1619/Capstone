@@ -6,6 +6,7 @@ import {
   FormControl,
   IconButton,
   Modal,
+  Rating,
   Skeleton,
   TextField,
   Typography,
@@ -14,6 +15,7 @@ import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import SearchIcon from '@mui/icons-material/Search';
+import toast from "react-hot-toast";
 
 const style = {
   display: "flex",
@@ -34,8 +36,33 @@ const style = {
   p: 4,
 };
 
+const getToast = (message) => {
+  toast(message, {
+    duration: 2000,
+    position: "top-center",
+
+    style: { zIndex: "1000000" },
+    className: "myToast",
+
+    icon: "",
+
+    iconTheme: {
+      primary: "#000",
+      secondary: "#fff",
+    },
+
+    ariaProps: {
+      role: "status",
+      "aria-live": "polite",
+    },
+  });
+};
+
 function Search() {
+
+  const backendApi = process.env.REACT_APP_BACKEND_API;
   const [loading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [hotelItems, setHotelItems] = useState("");
   const [booknowOpen, setbooknowOpen] = useState(false);
@@ -43,34 +70,142 @@ function Search() {
   const [bookingDate, setbookingDate] = useState(undefined);
   const [choosenCategory, setchoosenCategory] = useState(undefined);
   const [categoryOpen, setcategoryOpen] = useState(false);
+  const [getDisabled, setGetDisabled] = useState(false);
 
   const [searchItem, setSearchItem] = useState(
     JSON.parse(localStorage.getItem("search_item"))
   );
 
   useEffect(() => {
-    console.log(searchItem);
-  }, []);
+    getToast(searchItem ? searchItem.message: 'Hotel not found', searchItem);
+    if (searchItem?.hotels <= 20) {
+      setGetDisabled(true)
+    }
+  }, [])
 
-  const handleSeeMore = () => {};
+  useEffect(() => {
+    let startIndex = (page - 1) * 20
+    let endIndex = startIndex + 20
+    const currentData = searchItem?.hotels.slice(startIndex, endIndex);
+    setData(currentData)
+    if (endIndex >= searchItem?.hotels.length) {
+      setGetDisabled(true)
+    }
+  }, [page]);
+  
+  useEffect(() => {
+    if (data?.length !== 0) {
+      setLoading(false)
+    }
+    
+  }, [data])
 
-  const handleBookCancel = () => {};
+  useEffect(() => {
+    const element = document.querySelector(".searchResultRoot");
+    element.scrollTo({
+      top: 0,
+      /* behavior: "smooth", */
+    });
 
-  const handleBookingButton = () => {};
+    loading
+      ? setHotelItems(
+          Array.from(new Array(20)).map((item, index) =>
+            item ? undefined : (
+              <Skeleton
+                key={index}
+                variant="rectagular"
+                sx={{ width: "100%", height: "180px", borderRadius: "5px" }}
+              />
+            )
+          )
+        )
+      : setHotelItems(populateData());
+  }, [loading]);
 
-  const handleCategoryOpen = () => {};
+  const handleSeeMore = () => {
+    setTimeout(() => {
+      setPage(page + 1)
+    }, 1000)
+    setLoading(true);
+  };
+  
+  const handleBookingButton = (operation) => {
+    if (operation === 'cancel') {
+      setbooknowOpen(false);
+    }
+  };
+  
+  const handleBookCancel = () => {
+    setbooknowOpen(false);
+  };
 
-  const handleCategoryClose = () => {};
+  const handleCategoryOpen = () => {
+    setcategoryOpen(true);
+  };
 
-  const categoryChoose = () => {};
+  const handleCategoryClose = () => {
+    setcategoryOpen(false);
+  };
+
+  const categoryChoose = (category) => {
+    setchoosenCategory(category);
+    handleCategoryClose();
+  };
+
+  const booknowClick = (data) => {
+    setbooknowOpen(true);
+    setmodalFormData(data);
+  };
 
   const searchClick = () => {
     const searchField = document.querySelector('.searchField')
     searchField.focus()
   };
 
+  const populateData = () => {
+    return data?.map((hotel) => {
+      const hotelName = hotel.hotel_name;
+      const hotelDetails = hotel.hotel_details;
+      const hotelAddress = hotel.hotel_address;
+      const rating = hotel.rating;
+      const image = hotel.image_url;
+      const id = hotel.id;
+
+      return (
+        <div key={id} className="hotelCard">
+          <img
+            style={{ width: "100%", maxWidth: "120px", flex: "1 0" }}
+            src={image}
+            alt="Hotel Image"
+            loading="lazy"
+          />
+          <div className="cardDetailsDiv">
+            <h5 style={{ margin: 0 }}>{hotelName}</h5>
+            <Rating
+              name="read-only"
+              value={rating}
+              readOnly
+              sx={{ marginBottom: "3px" }}
+            />
+            <p style={{ margin: 0, fontSize: "small" }}>{hotelDetails}</p>
+          </div>
+          <div className="addressDiv">
+            <p style={{ fontSize: "small" }}>{hotelAddress}</p>
+            <Button
+              variant="contained"
+              className="booknowButton"
+              onClick={() => booknowClick(hotel)}
+            >
+              Book now
+            </Button>
+          </div>
+        </div>
+      );
+    });
+  };
+
   return (
-    <div className="searchRoot">
+    <div className="searchResultRoot">
       <div className="searchContainer">
         <div className="searchHeader">
           <Typography variant="h3" className="sloganTop slogan">
@@ -81,17 +216,20 @@ function Search() {
           </Typography>
         </div>
 
-        {searchItem ? (
+        {searchItem?.hotels || searchItem?.hotels === [] ? (
           loading ? (
+            /* IF SEARCHING OR LOADING */
             <div style={{width: '100%'}}>
               <Skeleton animation="wave" width="20%">
                 <Typography variant="h6">.</Typography>
               </Skeleton>
+              <div className="searchListContainer">{hotelItems}</div>
               <Skeleton sx={{ margin: "50px auto 0 auto" }} animation="wave">
                 <Button>See More</Button>
               </Skeleton>
             </div>
           ) : (
+            /* IF THE RESULT IS FOUND */
             <div className="searchBody">
               <Typography variant="h6" className="searchListTitle">
                 Find Your Hotels{" "}
@@ -105,16 +243,19 @@ function Search() {
                   Page: {page}
                 </span>
               </Typography>
+              <div className="searchListContainer">{hotelItems}</div>
               <Button
                 className="seemoreButton"
                 onClick={handleSeeMore}
                 variant="contained"
+                disabled={getDisabled}
               >
                 See More
               </Button>
             </div>
           )
         ) : (
+          /* IF SEARCH RESULT NOT FOUND */
           <div className="searchBody">
             <Typography
               variant="h4"
@@ -130,7 +271,7 @@ function Search() {
           </div>
         )}
 
-        <div className="searchListContainer">{hotelItems}</div>
+        
       </div>
       <Modal
         open={booknowOpen}

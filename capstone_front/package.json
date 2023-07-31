@@ -2,6 +2,7 @@
   "name": "capstone_front",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://reservacapstone.000webhostapp.com/",
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
@@ -16,6 +17,7 @@
     "axios": "^1.4.0",
     "date-fns": "^2.30.0",
     "dayjs": "^1.11.9",
+    "dotenv": "^16.3.1",
     "luxon": "^3.3.0",
     "moment": "^2.29.4",
     "react": "^17.0.0 || ^18.0.0",

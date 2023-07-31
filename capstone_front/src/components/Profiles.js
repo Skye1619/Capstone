@@ -38,7 +38,7 @@ const style = {
 
 function Profiles() {
 
-  const backendApi = process.env.BACKEND_URL
+  const backendApi = process.env.REACT_APP_BACKEND_API
   const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
 
@@ -83,7 +83,6 @@ function Profiles() {
   };
 
   const deactivateConfirm = () => {
-    console.log(confirmRef.current.value);
     if (confirmRef.current.value === "Confirm") {
       // Confirm the Account Deactivation
       setDeleting(true);
@@ -310,7 +309,6 @@ function Profiles() {
           getToast('Your Property is on the list')
           handleClose()
         } catch (error) {
-          console.log(error)
           getToast('Error loading')
           setListing(false)
           handleClose()
@@ -319,7 +317,6 @@ function Profiles() {
 
       fetchData()
 
-      console.log(FormData)
     }
 
     if (operation === "edit") {
@@ -359,7 +356,6 @@ function Profiles() {
           localStorage.removeItem("user");
           setUpdating(false);
           localStorage.setItem("user", JSON.stringify(response.data.user));
-          console.log(response.data, "hello");
           window.location.reload();
         } catch (error) {
           console.error(error, error.response.data.message);

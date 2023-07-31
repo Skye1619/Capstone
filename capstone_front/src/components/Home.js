@@ -37,8 +37,7 @@ const style = {
 };
 
 function Home() {
-
-  const backendApi = process.env.BACKEND_URL
+  const backendApi = process.env.REACT_APP_BACKEND_API;
 
   const [data, setData] = useState([]);
   const [loading, setloading] = useState(true);
@@ -49,26 +48,36 @@ function Home() {
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [choosenCategory, setchoosenCategory] = useState(undefined);
   const [bookingDate, setbookingDate] = useState(dayjs());
+  const [error, setError] = useState(undefined);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `${backendApi}/home?page=${page}`,
-          {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("login_token"),
-            },
-          }
-        );
+        const response = await axios.get(`${backendApi}/home?page=${page}`, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("login_token"),
+          },
+        });
         let hotels = response.data.hotels;
-        console.log(hotels);
 
-        setData(hotels);
+        hotels === []
+          ? setError(
+              <div className="hotelsList">
+                <Typography variant="h5" sx={{ textAlign: "center" }}>
+                  Error Loading Hotels
+                </Typography>
+              </div>
+            )
+          : setData(hotels);
         setloading(false);
       } catch (error) {
-        console.log(error);
-        setloading(false);
+        setError(
+          <div className="hotelsList">
+            <Typography variant="h5" sx={{ textAlign: "center" }}>
+              Error Loading Hotels
+            </Typography>
+          </div>
+        );
       }
     };
 
@@ -186,37 +195,44 @@ function Home() {
             Reserve with Reserva
           </Typography>
         </div>
-        <div className="hotelsList">
-          {loading ? (
-            <Skeleton animation="wave" width="20%">
-              <Typography variant="h6">.</Typography>
-            </Skeleton>
-          ) : (
-            <Typography variant="h6" className="hotelListTitle">
-              Find Your Hotels{" "}
-              <span
-                style={{ fontSize: "small", color: "#999", marginLeft: "auto" }}
+        {error ? (
+          error
+        ) : (
+          <div className="hotelsList">
+            {loading ? (
+              <Skeleton animation="wave" width="20%">
+                <Typography variant="h6">.</Typography>
+              </Skeleton>
+            ) : (
+              <Typography variant="h6" className="hotelListTitle">
+                Find Your Hotels{" "}
+                <span
+                  style={{
+                    fontSize: "small",
+                    color: "#999",
+                    marginLeft: "auto",
+                  }}
+                >
+                  Page: {page}
+                </span>
+              </Typography>
+            )}
+            <div className="hotelListContainer">{hotelItems}</div>
+            {loading ? (
+              <Skeleton sx={{ margin: "50px auto 0 auto" }} animation="wave">
+                <Button>See More</Button>
+              </Skeleton>
+            ) : (
+              <Button
+                className="seemoreButton"
+                onClick={handleSeeMore}
+                variant="contained"
               >
-                Page: {page}
-              </span>
-            </Typography>
-          )}
-
-          <div className="hotelListContainer">{hotelItems}</div>
-          {loading ? (
-            <Skeleton sx={{ margin: "50px auto 0 auto" }} animation="wave">
-              <Button>See More</Button>
-            </Skeleton>
-          ) : (
-            <Button
-              className="seemoreButton"
-              onClick={handleSeeMore}
-              variant="contained"
-            >
-              See More
-            </Button>
-          )}
-        </div>
+                See More
+              </Button>
+            )}
+          </div>
+        )}
       </div>
       <Modal
         open={booknowOpen}

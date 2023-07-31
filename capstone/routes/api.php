@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\historyController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\PriceController;
 use App\Http\Controllers\UserAuthenticationController;
@@ -31,4 +32,5 @@ Route::middleware('auth:api')->group(function () {
     Route::resource('/user/profile', UserController::class);
     Route::resource('/price', PriceController::class);
     Route::resource('/hotels', HotelController::class);
+    Route::resource('/history', historyController::class);
 });

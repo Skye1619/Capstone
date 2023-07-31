@@ -72,7 +72,7 @@ const navItems = ["Profile", "Home", "About", "Logout"];
 
 export default function SearchAppBar(props) {
 
-  const backendApi = process.env.BACKEND_URL
+  const backendApi = process.env.REACT_APP_BACKEND_API
   const { window } = props;
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -88,13 +88,11 @@ export default function SearchAppBar(props) {
     } else if (item === "About") {
     } else if (item === "Logout") {
       localStorage.clear();
-      console.log("logged out", item);
     }
   };
 
   const searchChange = (event) => {
     setSearchValue((prevState) => event.target.value);
-    console.log(searchValue);
   };
 
   const searchNow = (event) => {
@@ -112,17 +110,13 @@ export default function SearchAppBar(props) {
               },
             }
           );
-          console.log(response.data.hotels);
           if (response.data.message === "Hotel not found") {
             localStorage.removeItem("search_item");
-            getToast(response.data.message);
             navigate(searchValue);
             event.view.location.reload()
           } else {
             localStorage.removeItem("search_item");
             navigate(searchValue);
-            getToast(response.data.message);
-            console.log(response.data)
             localStorage.setItem("search_item", JSON.stringify(response.data));
             event.view.location.reload()
           }

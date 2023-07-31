@@ -12,8 +12,8 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
+  const backendApi = process.env.REACT_APP_BACKEND_API;
 
-  const backendApi = process.env.BACKEND_URL
   const navigation = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
@@ -36,22 +36,16 @@ function Login() {
       setsubmitLoading(false);
       return;
     } else {
-      console.log("logging in");
       try {
         const response = await axios.post(
           `${backendApi}/login`,
-          formData
+          formData,
         );
         const token = response.data.token;
         localStorage.setItem("login_token", token);
-        /* localStorage.setItem("username", response.data.user.username);
-        localStorage.setItem("email", response.data.user.email);
-        localStorage.setItem("phonenumber", response.data.user.phonenumber); */
         localStorage.setItem("user", JSON.stringify(response.data.user));
-        console.log(response);
         navigation("/home");
       } catch (error) {
-        console.log(error);
         let errorMessage = error.response.data.error;
         setError(errorMessage);
       }
@@ -62,7 +56,6 @@ function Login() {
   const buttonClick = async () => {};
 
   const enterPressed = (event) => {
-    console.log(event.key)
     if (event.key === "Enter") {
       handleLogin();
     }
@@ -80,7 +73,6 @@ function Login() {
   };
 
   const handleChange = (event) => {
-    // console.log(event.target.name, event.target.value);
     setFormData((prevstate) => ({
       ...prevstate,
       [event.target.name]: event.target.value,

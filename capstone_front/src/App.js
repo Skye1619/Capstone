@@ -31,7 +31,6 @@ function App() {
   }
 
   const loc = useLocation();
-  console.log(loc);
   const { pathname } = loc;
 
   useEffect(() => {

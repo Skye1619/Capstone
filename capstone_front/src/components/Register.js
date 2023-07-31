@@ -6,7 +6,7 @@ import axios from "axios";
 
 function Register() {
 
-  const backendApi = process.env.BACKEND_URL
+  const backendApi = process.env.REACT_APP_BACKEND_API
   const navigate = useNavigate();
   const [Loading, setLoading] = useState(false);
   const [Error, setError] = useState("");
@@ -25,7 +25,6 @@ function Register() {
   }, [])
 
   const enterPressed = (event) => {
-    console.log(event.key)
     if (event.key === "Enter") {
       handleRegister();
     }
