@@ -62,10 +62,10 @@ function Landing() {
         <Typography variant="p" sx={{ textAlign: "center" }}>
           Before continuing, please visit this site{" "}
           <Link
-            to="https://ec2-44-203-99-165.compute-1.amazonaws.com"
+            to="https://ec2-34-207-75-51.compute-1.amazonaws.com"
             target="_blank"
           >
-            ec2-44-203-99-165.compute-1.amazonaws.com
+            ec2-34-207-75-51.compute-1.amazonaws.com
           </Link>{" "}
           to be able to access the backend of my application
         </Typography>
